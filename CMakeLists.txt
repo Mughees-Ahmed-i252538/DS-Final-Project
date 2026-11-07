@@ -23,7 +23,8 @@ GIT_SHALLOW On)# This makes it so that we dont get theri old git hsitory
 
 FetchContent_MakeAvailable(SFML) #This line actually fetches based on our fetch declraation when run (as command of cmake is run)\
 
-add_executable(Program src/main.cpp)#Program is the name of the exe file to build; 
+add_executable(Program main.cpp)#Program is the name of the exe file to build; 
+#self as no src folder so deleted /src from main's path
 #Each Program is an exe file, a project can have multiple exe files
 #Program provides a target to include source files in
 #It also serves as a target to link libraries to
@@ -33,4 +34,4 @@ target_link_libraries(Program PRIVATE SFML::Graphics)
 
 
 
-)
+#Issue came, cmake didnt have access to the git; added a 
