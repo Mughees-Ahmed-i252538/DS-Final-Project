@@ -1,1 +1,4 @@
 build/
+#This is a git ignore file; It ignores the build folder
+#Such that we dont have to commit changes (ie the files in build folder acting as changes)
+#Only if no unstaged changes are left we can sync to main
