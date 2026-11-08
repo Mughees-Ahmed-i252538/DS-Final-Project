@@ -12,3 +12,9 @@ build/
 
 #One big reason build fails giving reason, couldnt open program.exe is that program.exe is already open, you have to force close it in Task manager
 #Allah swt knows best
+
+#Create a branch, 
+#do changes
+#Change current brach to main using the bottom left (in status bar in vs code)
+#Now go to command pallet, ctrl + shift + P, do Git: Merge, it gives option select The brach made previously; it will merge then upload to origin
+#checkout lets you view older version of code
