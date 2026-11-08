@@ -6,3 +6,4 @@ build/
 #Note git doesnt ca=ount empty folders ads changes but does if you place a file isnide them
 
 #It doesnt track directories but files I guess; Allah swt knows best
+#Note fetch gets all remote changes and pull gets and merges them too
