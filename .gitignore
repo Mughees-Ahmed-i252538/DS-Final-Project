@@ -10,3 +10,5 @@ build/
 #Note fetch gets all remote changes and pull gets and merges them too
 #small blue lock next ti file aonly means trackecked and uchaged since last successful sync
 
+#One big reason build fails giving reason, couldnt open program.exe is that program.exe is already open, you have to force close it in Task manager
+#Allah swt knows best
