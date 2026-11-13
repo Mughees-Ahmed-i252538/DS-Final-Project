@@ -130,4 +130,21 @@ struct EventModel
     int cap = 0;
     int top = -1;
     Event *EventLog = nullptr; // A ty
+
+    void AddEvent(string name, void *data);
+    // Not known whether repeats of same event for different strutts like both bst and bt may visit
+    // If so i think i will make a differnet copy for them and make unique namess to ease undo inshallah
+    void VISIT();
+    void COMPARE();
+    void INSERT();
+    void UNLINK();
+    void SWAP_VALUE();
+    void ROTATE();
+    void UPDATE_HEIGHT_OR_UPDATE_SIZE(); // Not known whether this should be two differnet function
+    void BALANCE_ALERT();
+    void HIGHLIGHT_SUBTREE();
+    void HEAP_BUILD();
+    void HEAP_SWAP();
+    void HEAPIFY_START_OR_HEAPIFY_DONE(); // Not known whether this should be two differnet function
+    void EXTRACT_MAX();
 };
