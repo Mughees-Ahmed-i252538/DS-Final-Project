@@ -18,3 +18,6 @@ build/
 #Change current brach to main using the bottom left (in status bar in vs code)
 #Now go to command pallet, ctrl + shift + P, do Git: Merge, it gives option select The brach made previously; it will merge then upload to origin
 #checkout lets you view older version of code
+#EVene if you delete a branch from vs code
+#its origin stays in github
+#have to delte in github (google says there is also github command to do it)
