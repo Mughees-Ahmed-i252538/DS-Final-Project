@@ -30,5 +30,22 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
         window.display();
     }
 
-    // return 0;
+    return 0; // Just a placeholder to remove the warning that comes, curretn logic doenst reach it and pretriggers
 }
+
+// Note the std::option contains the sf::Event datatype
+// It is like a box, either expty or full
+// It takes in the evenet datatype because the window.poll returns event
+// If the widnows.poll returns std::nullopt
+// The box knows that it has to be empty, although its type is std::optiona<sf::Event>
+// the nullopt can be returned even though return type is sf::Event because it fucnitons like a nullptr, which can be returned for int*, float* etc  ptr
+// When the std;:optional sees this nullopt,
+// Atlthough its type remains std::optional<sf::Event>
+// a bool inside optional is made = false that tells it is empty and the event object inside isnt initialized
+// We can adccess the is object isnide it using the -> (because it has been overloaded)
+// The ->
+// As the event itself is the std::optional
+// the . operator access its own fucnitons etc
+// They overaloaded he -> operator to let us access the fucnitosn of the sf::event isnide it
+// Then the is() is a fucnito with a template inside it
+// It lets us send the datatypes themseles and uses a clever indexinf mechanism in the events to check if the the event type id is same as the id assigned to the class / type of event we have sent
