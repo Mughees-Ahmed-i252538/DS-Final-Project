@@ -10,10 +10,11 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
 {
     sf::Texture MainSc_Bg_Texture;
 
-    if (!MainSc_Bg_Texture.loadFromFile("../Assets/images/MainSc_Bg.jpg.jpeg")) // starts from build folder
+    if (!MainSc_Bg_Texture.loadFromFile("../src/Assets/images/MainSc_Bg.jpg")) // starts from build folder
     {
         cout << "Failed to Load MainSc_Bg_Texture" << endl;
-    }
+    } // issue: file suggestion offerned by intellesnece are relative to this file, but actual checks are relative to build folder.. it was mossing the src in file path
+    // Unlikd this the #include is reolved at compile time so it uses location of including file as starter
 
     sf::Sprite MainSc_Bg_Sprite(MainSc_Bg_Texture); // No default cosntructor exsist hence must give texture at start
 
