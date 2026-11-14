@@ -22,7 +22,7 @@ struct INSERT_Data
     int nodeId = 0;
     int key = 0;
     int side = 0; // This one has a high chance of changing,Allah swt knows best
-};
+}; // I think side might mean left or right, Allah swt knows best
 
 struct UNLINK_Data
 {
@@ -38,7 +38,7 @@ struct SWAP_VALUE_Data
 
 struct ROTATE_Data
 {
-    string type = "  "; // type uncertain but LL,LR,RR,RL are possible values
+    string type = "  "; // type's datatype uncertain but LL,LR,RR,RL are possible values
     int pivotId;
 };
 
@@ -116,10 +116,10 @@ struct DONE_Data
 
 // May also add data in things eg rotate to be able to undo and rotate
 // Can also do snapshots, aka serialization (then shift to inverse events if time allows inshallah)//i think lets op for snapshots
-struct Event
+struct Event // The event doenst delete the data,
 {
     string name;
-    void *Data; // The data type of this is recognized using the name of the event
+    void *Data = nullptr; // The data type of this is recognized using the name of the event
     // I am planning a different function for each event registration
 };
 // I believe we might need different data for visit to a bst and a bt,
@@ -132,19 +132,25 @@ struct EventModel
     Event *EventLog = nullptr; // A ty
 
     void AddEvent(string name, void *data);
+
+    ~EventModel(); // Sees what the data is and calls the data destructor for each of those data after transforming the ptr back to them
     // Not known whether repeats of same event for different strutts like both bst and bt may visit
     // If so i think i will make a differnet copy for them and make unique namess to ease undo inshallah
-    void VISIT();
-    void COMPARE();
-    void INSERT();
-    void UNLINK();
+    void VISIT(int nodeId);
+    void COMPARE(int nodeId, int key, char result);
+    void INSERT(int nodeId, int key, int side);
+    void UNLINK(int nodeId, int key, int side);
     void SWAP_VALUE();
-    void ROTATE();
-    void UPDATE_HEIGHT_OR_UPDATE_SIZE(); // Not known whether this should be two differnet function
-    void BALANCE_ALERT();
-    void HIGHLIGHT_SUBTREE();
-    void HEAP_BUILD();
-    void HEAP_SWAP();
-    void HEAPIFY_START_OR_HEAPIFY_DONE(); // Not known whether this should be two differnet function
-    void EXTRACT_MAX();
+    void ROTATE(string type, int pivotId);
+    void UPDATE_HEIGHT_OR_UPDATE_SIZE(int nodeId, int old_, int new_); // Not known whether this should be two differnet function
+    void BALANCE_ALERT(int nodeId, int balanceFactor);
+    void HIGHLIGHT_SUBTREE(int nodeId, string mode);
+    void HEAP_BUILD(int *array, int size, int start_indices);
+    void HEAP_SWAP(int indexA, int indexB, string reason);
+    void HEAPIFY_START_OR_HEAPIFY_DONE(int startIndex, int heapSize); // Not known whether this should be two differnet function
+    void EXTRACT_MAX(int value, int rootIndex, int heapSize);
+    void MARK_SORTED(int index, int value);
+    void HEAP_SIZE_CHANGE(int oldSize, int newSize);
+    void HEAP_SORT_COMPLETE(int *array, int size); // Data types stored still not confimed, may change when we come to using this inshallah
+    void DONE(string summary);
 };
