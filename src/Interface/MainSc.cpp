@@ -131,8 +131,19 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
                 }
                 */
             }
-            else if (event->is<sf::Event::MouseButtonPressed>())
-            {
+            else if (sf::Event::MouseButtonPressed *click = event->getIf<sf::Event::MouseButtonPressed>())
+            {                                                                              // If mouse button pressed this block runs
+                sf::Vector2f cursor_cordinates = window.mapPixelToCoords(click->position); // Because the position is in pixels, but we are using a view port so for us, the world is in coordinates; We need to convert pixels to coordinates
+
+                if (click->button == sf::Mouse::Button::Left)
+                {
+                    // We do checks for if the cursor was on one of the buttons
+
+                    if (Sprite_has_cursor_on_it(Quit_Button_ST.Sprite, cursor_cordinates))
+                    {
+                        return 0; // If left button pressed and cursor coordinates are in space of quit button, return 0
+                    }
+                }
             }
         }
         /*

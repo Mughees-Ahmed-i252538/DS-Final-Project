@@ -187,3 +187,15 @@ void setOriginToCenter(sf::Text &Text) // Issue found, the string was empty when
 
     Text.setOrigin(Text_Geometric_Center); // Because ddefault constructors dont exist for either sprite or font
 }
+
+bool Sprite_has_cursor_on_it(sf::Sprite &Sprite, sf::Vector2f Cursor_Coordiantes)
+{
+    if (Sprite.getGlobalBounds().contains(Cursor_Coordiantes))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
