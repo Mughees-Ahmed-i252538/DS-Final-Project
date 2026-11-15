@@ -3,20 +3,66 @@
 // This file will contain the logic of the main screen
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
+// #include <SFML/Graphics.hpp> done in ui manager.cpp (although oindirectly through a more forward file)
+#include "UIManager.cpp"
 using namespace std;
 
 int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forwarding (tentative exact puroose but kept this way for flexibilluty may not be used in current version)
 {
+    int Window_View_Size_x = window.getView().getSize().x; // these are needed to be able to set sizes of our sprites
+    int Window_View_Size_y = window.getView().getSize().y;
+
+    sf::Vector2f Wanted_View_Size(Window_View_Size_x, Window_View_Size_y);
+
     sf::Texture MainSc_Bg_Texture;
 
-    if (!MainSc_Bg_Texture.loadFromFile("../src/Assets/images/MainSc_Bg.jpg")) // starts from build folder
+    if (!MainSc_Bg_Texture.loadFromFile("../src/Assets/images/MainSc/MainSc_Bg.jpg")) // starts from build folder
     {
         cout << "Failed to Load MainSc_Bg_Texture" << endl;
     } // issue: file suggestion offerned by intellesnece are relative to this file, but actual checks are relative to build folder.. it was mossing the src in file path
     // Unlikd this the #include is reolved at compile time so it uses location of including file as starter
 
     sf::Sprite MainSc_Bg_Sprite(MainSc_Bg_Texture); // No default cosntructor exsist hence must give texture at start
+
+    // MainSc_Bg_Sprite we cant directly set size, in sfml , we can set scale
+    // This set scale is wrt its actual global size
+    // So we make a set size helper function
+
+    // setSize(MainSc_Bg_Sprite, Wanted_View_Size); // to serve as the bg we need it to take whole screen
+    setBgSize(window, MainSc_Bg_Sprite); // Sees window view to set size directly ( helpef function)
+    // I think we can make afucniton
+    // Set bg using view if need be
+
+    sf::Texture MainSc_Button_Texture;
+
+    if (!MainSc_Button_Texture.loadFromFile("../src/Assets/images/MainSc/MainSc_Button.png"))
+    {
+        cout << "Failed to Load MainSc_Button_Texture" << endl;
+    }
+
+    sf::Font MainSc_Button_Text_Font;
+
+    if (!MainSc_Button_Text_Font.openFromFile("../src/Assets/fonts/MainSc/Aquire.otf")) // fonts use open from file insteado f load from file from sfml 3 because it streams on demand not store in memory
+    {
+        cout << "Failed to Open MainSc_Button_Text_Font" << endl;
+    }
+
+    SpriteTextBox Campaign_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font); // for some reason this was saying default constructor delted (apparently this happens if a datamemebr cant be constructed by default compiler cant make a default constructor for the holder class...)
+    Campaign_Button_ST.Text.setString("Campaign");
+    Campaign_Button_ST.setPosition(sf::Vector2f(500, 500));
+    SpriteTextBox Endless_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Endless_Button_ST.Text.setString("Endless");
+    SpriteTextBox Sandbox_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Sandbox_Button_ST.Text.setString("Sandbox");
+    SpriteTextBox Leaderboard_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Leaderboard_Button_ST.Text.setString("Leaderboard");
+    SpriteTextBox Settings_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Settings_Button_ST.Text.setString("Settings");
+    SpriteTextBox Quit_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Quit_Button_ST.Text.setString("Quit");
+
+    int Button_pos_x = Campaign_Button_ST.Sprite.getPosition().x;
+    int Button_pos_y = Campaign_Button_ST.Sprite.getPosition().y;
 
     while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
     {
@@ -26,8 +72,60 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
             {
                 return 0;
             } // Exit is working ALhamdulilah
+
+            // Keyboard events
+            if (sf::Event::KeyPressed *Key = event->getIf<sf::Event::KeyPressed>()) // KEypressed is a datatype
+            {                                                                       // We use a * because it is able to be converted to bool
+                                                                                    // The getIf returns nullptr if event isnt KeyPressed, hence we wont run this block
+                                                                                    // More importantly getIf always returns a ptr const t*; t is a template placeholder, we made template keypressed
+                                                                                    // If event not of keypressed type it returns nullptr
+
+                /*
+                if (Key->code == sf::Keyboard::Key::Right) // This is an enum for code of right arrow
+                {
+                    Button_pos_x += 7;
+                }
+
+                if (Key->code == sf::Keyboard::Key::Left) // This is an enum for code of right arrow
+                {
+                    Button_pos_x -= 7;
+                }
+
+                if (Key->code == sf::Keyboard::Key::Up) // This is an enum for code of right arrow
+                {
+                    Button_pos_y -= 7;
+                }
+
+                if (Key->code == sf::Keyboard::Key::Down) // This is an enum for code of right arrow
+                {
+                    Button_pos_x += 7;
+                }*/
+            }
         }
+
+        // Now for real time keyboard input
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            Button_pos_x += 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            Button_pos_x -= 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            Button_pos_y -= 1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            Button_pos_y += 1;
+        }
+
+        // cout << Button_pos_x << " " << Button_pos_y << endl; // For finding out correct position
+
         window.draw(MainSc_Bg_Sprite);
+        Campaign_Button_ST.setPosition(sf::Vector2f(Button_pos_x, Button_pos_y));
+        Campaign_Button_ST.draw_on(window); // The buttons must be on top of bg else bg will hide them
         window.display();
     }
 
