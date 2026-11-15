@@ -48,21 +48,49 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
     }
 
     SpriteTextBox Campaign_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font); // for some reason this was saying default constructor delted (apparently this happens if a datamemebr cant be constructed by default compiler cant make a default constructor for the holder class...)
-    Campaign_Button_ST.Text.setString("Campaign");
-    Campaign_Button_ST.setPosition(sf::Vector2f(500, 500));
-    SpriteTextBox Endless_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
-    Endless_Button_ST.Text.setString("Endless");
-    SpriteTextBox Sandbox_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
-    Sandbox_Button_ST.Text.setString("Sandbox");
-    SpriteTextBox Leaderboard_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
-    Leaderboard_Button_ST.Text.setString("Leaderboard");
-    SpriteTextBox Settings_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
-    Settings_Button_ST.Text.setString("Settings");
-    SpriteTextBox Quit_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
-    Quit_Button_ST.Text.setString("Quit");
+    Campaign_Button_ST.setString("Campaign");
+    Campaign_Button_ST.setRelativeSizeDifference(sf::Vector2f(-300, -100)); // This is relative size differnece bw text and box sizes
+    Campaign_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Campaign_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Campaign_Button_ST.setPosition(sf::Vector2f(1093, 130));
 
-    int Button_pos_x = Campaign_Button_ST.Sprite.getPosition().x;
-    int Button_pos_y = Campaign_Button_ST.Sprite.getPosition().y;
+    SpriteTextBox Endless_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Endless_Button_ST.setString("Endless");
+    Endless_Button_ST.setRelativeSizeDifference(sf::Vector2f(-300, -100)); // This is relative size differnece bw text and box sizes
+    Endless_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Endless_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Endless_Button_ST.setPosition(sf::Vector2f(1093, 270));
+
+    SpriteTextBox Sandbox_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Sandbox_Button_ST.setString("Sandbox");
+    Sandbox_Button_ST.setRelativeSizeDifference(sf::Vector2f(-300, -100)); // This is relative size differnece bw text and box sizes
+    Sandbox_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Sandbox_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Sandbox_Button_ST.setPosition(sf::Vector2f(1093, 407));
+
+    SpriteTextBox Leaderboard_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Leaderboard_Button_ST.setString("Leaderboard");
+    Leaderboard_Button_ST.setRelativeSizeDifference(sf::Vector2f(-200, -100)); // This is relative size differnece bw text and box sizes
+    Leaderboard_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Leaderboard_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Leaderboard_Button_ST.setPosition(sf::Vector2f(1093, 547));
+
+    SpriteTextBox Settings_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Settings_Button_ST.setString("Settings");
+    Settings_Button_ST.setRelativeSizeDifference(sf::Vector2f(-250, -100)); // This is relative size differnece bw text and box sizes
+    Settings_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Settings_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Settings_Button_ST.setPosition(sf::Vector2f(1093, 685));
+
+    SpriteTextBox Quit_Button_ST(MainSc_Button_Texture, MainSc_Button_Text_Font);
+    Quit_Button_ST.setString("Quit");
+    Quit_Button_ST.setRelativeSizeDifference(sf::Vector2f(-400, -100)); // This is relative size differnece bw text and box sizes
+    Quit_Button_ST.setRelativePosDifferenceBwCenters(sf::Vector2f(0, -20));
+    Quit_Button_ST.setSize_Minding_Relative_Size(sf::Vector2f(550, 120));
+    Quit_Button_ST.setPosition(sf::Vector2f(1093, 821)); // If previous bitton moves up by 10 next moves up by 20 to accomodate that space too
+
+    // int Button_pos_x = Quit_Button_ST.Sprite.getPosition().x;
+    // int Button_pos_y = Quit_Button_ST.Sprite.getPosition().y;
 
     while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
     {
@@ -80,29 +108,34 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
                                                                                     // More importantly getIf always returns a ptr const t*; t is a template placeholder, we made template keypressed
                                                                                     // If event not of keypressed type it returns nullptr
 
+                // FOr fine tuning
                 /*
-                if (Key->code == sf::Keyboard::Key::Right) // This is an enum for code of right arrow
+                if (Key->code == sf::Keyboard::Key::D) // This is an enum for code of right arrow
                 {
                     Button_pos_x += 7;
                 }
 
-                if (Key->code == sf::Keyboard::Key::Left) // This is an enum for code of right arrow
+                if (Key->code == sf::Keyboard::Key::A) // This is an enum for code of right arrow
                 {
                     Button_pos_x -= 7;
                 }
 
-                if (Key->code == sf::Keyboard::Key::Up) // This is an enum for code of right arrow
+                if (Key->code == sf::Keyboard::Key::W) // This is an enum for code of right arrow
                 {
                     Button_pos_y -= 7;
                 }
 
-                if (Key->code == sf::Keyboard::Key::Down) // This is an enum for code of right arrow
+                if (Key->code == sf::Keyboard::Key::S) // This is an enum for code of right arrow
                 {
-                    Button_pos_x += 7;
-                }*/
+                    Button_pos_y += 7;
+                }
+                */
+            }
+            else if (event->is<sf::Event::MouseButtonPressed>())
+            {
             }
         }
-
+        /*
         // Now for real time keyboard input
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) // This bypasses the poll queue to directly reaad state of keyboard
         {
@@ -121,11 +154,19 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
             Button_pos_y += 1;
         }
 
-        // cout << Button_pos_x << " " << Button_pos_y << endl; // For finding out correct position
-
+        cout << Button_pos_x << " " << Button_pos_y << endl; // For finding out correct position
+        Quit_Button_ST.setPosition(sf::Vector2f(Button_pos_x, Button_pos_y));
+        //Adjusting logic commented
+        */
         window.draw(MainSc_Bg_Sprite);
-        Campaign_Button_ST.setPosition(sf::Vector2f(Button_pos_x, Button_pos_y));
+
         Campaign_Button_ST.draw_on(window); // The buttons must be on top of bg else bg will hide them
+        Endless_Button_ST.draw_on(window);
+        Sandbox_Button_ST.draw_on(window);
+        Leaderboard_Button_ST.draw_on(window);
+        Settings_Button_ST.draw_on(window);
+        Quit_Button_ST.draw_on(window);
+
         window.display();
     }
 
