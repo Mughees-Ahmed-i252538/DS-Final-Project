@@ -8,6 +8,11 @@
 #include <iostream>
 // #include <SFML/Graphics.hpp>//included via main sc file
 #include "../Interface/MainSc.cpp"
+#include "LevelManager.cpp" //only included here to testm this is instead included inside campaign map ui
+// Actually Object is possessed by Game()
+// Which sends it to mainSc which forwards it to CampaignSc
+// But Camapign is the one to interact with it (it doesnt own it, simply interacts with it)
+
 #define WANTED_VIEW_X 1920
 #define WANTED_VIEW_Y 1080
 
@@ -39,10 +44,20 @@ void Game()
 
     window.setView(Wanted_View);
 
-    MainSc(window); // Window given to main sc
-    // The first screen toa actually display
+    // MainSc(window); // Window given to main sc
+    //  The first screen toa actually display
+
+    // Temporary commenting the display of the screen to run tests on the level manager
 
     window.close();
+
+    LevelManager L;
+
+    cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
+    // tests
+    cout << L.Catalog.No_of_Levels << endl;
+    cout << L.Catalog.Catalog_Of_Level_NF_Maps[0].name << endl;
+    cout << L.Catalog.Catalog_Of_Level_NF_Maps[0].file << endl;
 
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }
