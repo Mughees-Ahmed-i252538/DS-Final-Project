@@ -5,6 +5,7 @@
 #include <iostream>
 // #include <SFML/Graphics.hpp> done in ui manager.cpp (although oindirectly through a more forward file)
 #include "UIManager.cpp"
+#include "CampaignMapSc.cpp"
 using namespace std;
 
 int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forwarding (tentative exact puroose but kept this way for flexibilluty may not be used in current version)
@@ -143,6 +144,9 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
                     {
                         return 0; // If left button pressed and cursor coordinates are in space of quit button, return 0
                     }
+                    else if (Sprite_has_cursor_on_it(Campaign_Button_ST.Sprite, cursor_cordinates))
+                    {
+                                        }
                 }
             }
         }

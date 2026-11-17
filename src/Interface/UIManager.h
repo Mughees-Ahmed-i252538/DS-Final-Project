@@ -12,7 +12,8 @@ using namespace std;
 // This is a self made extension to sfml sprite box
 // This works to auto centre text in the box
 // Ensure the the text scales and moves with respect to the sprite
-
+#ifndef UIManager
+#define UIManager
 struct SpriteTextBox
 {
     sf::Sprite Sprite;
@@ -55,3 +56,5 @@ void setOriginToCenter(sf::Text &Text);
 // Plan, build a list data type, that does auto placement and lets us adjust sizes of each and internal differnece forr ease of ui adjustment inshallah
 
 bool Sprite_has_cursor_on_it(sf::Sprite &Sprite, sf::Vector2f Cursor_Coordiantes);
+
+#endif
