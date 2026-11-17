@@ -56,8 +56,8 @@ void Game()
     cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
     // tests
     cout << L.Catalog.No_of_Levels << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[0].name << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[0].file << endl;
+    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].name << endl;
+    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].file << endl;
 
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }

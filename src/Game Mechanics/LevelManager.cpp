@@ -67,9 +67,10 @@ int LevelManager::loadCatalogue() // needs var renaming for ease of understandin
     // Issue was when next line is written to it, previous line is overwritten
     while (getline(file, One_Line_Buffer)) // Auto delimeter \n
     {                                      // Correction: have to do while getline(file,Onel ine buffer), if successfull getting run the storing block
-                                           // Presiosuly doing !getlim..... if unsuccessful only then write to file_conetent, which only wrote empty line i belive
-                                           // cout << "One line Buffer" << One_Line_Buffer << endl;//Test time test output not debug output of realtime hence commented
-                                           // file_content += One_Line_Buffer; // One by one next string is concatenated to file_content                  // Cant do getline withofstream
+        // Presiosuly doing !getlim..... if unsuccessful only then write to file_conetent, which only wrote empty line i belive
+        // cout << "One line Buffer" << One_Line_Buffer << endl;//Test time test output not debug output of realtime hence commented
+        file_content += One_Line_Buffer; // One by one next string is concatenated to file_content                  // Cant do getline withofstream
+                                         // Had accidently commented this line that concatenates buffer with content whicle commented test outputs, Fixed Alhamdulilah rab al alameen
     } // keep inputing untill getline gives 0,  getline manages using EOF
 
     // Adding tri function that trims surrounding spaces (may be wont)
