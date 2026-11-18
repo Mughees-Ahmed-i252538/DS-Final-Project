@@ -44,7 +44,7 @@ void Game()
 
     window.setView(Wanted_View);
 
-    // MainSc(window); // Window given to main sc
+    MainSc(window); // Window given to main sc
     //  The first screen toa actually display
 
     // Temporary commenting the display of the screen to run tests on the level manager
@@ -59,5 +59,6 @@ void Game()
     cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].name << endl;
     cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].file << endl;
 
+    cout << L.loadLevel(1); // Load first level if exsists
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }
