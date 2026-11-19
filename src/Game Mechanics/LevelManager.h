@@ -11,16 +11,22 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-struct Level_NF_Map // Level Name, File name map
+struct Level_NFA_Map // Level Name, File name map
 {
     string name; // although map there isnt any restructions on repeats
     string file;
+    int Act_no = 0; // Structure update now structure uses
 };
 
 struct LevelCatalog
 {
     int No_of_Levels = 0;
-    Level_NF_Map *Catalog_Of_Level_NF_Maps = nullptr;
+    int Act_1_Levels = 0;
+    int Act_2_Levels = 0;
+    int Act_3_Levels = 0;
+    int Act_4_Levels = 0;
+
+    Level_NFA_Map *Catalog_Of_Level_NFA_Maps = nullptr;
 
     // for returning error occured/ successful close states
     int writeCatalogue(string Json_Levels_Catalog_File);
@@ -32,8 +38,8 @@ struct LevelCatalog
 
 struct Act_1_Data
 {
-    string Preorder;
-    string Inorder;
+    int *Preorder;
+    int *Inorder;
 };
 
 struct Act_2_Data

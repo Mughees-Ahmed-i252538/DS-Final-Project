@@ -44,8 +44,8 @@ void Game()
 
     window.setView(Wanted_View);
 
-    MainSc(window); // Window given to main sc
-    //  The first screen toa actually display
+    // MainSc(window); // Window given to main sc
+    //   The first screen toa actually display
 
     // Temporary commenting the display of the screen to run tests on the level manager
 
@@ -56,9 +56,9 @@ void Game()
     cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
     // tests
     cout << L.Catalog.No_of_Levels << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].name << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].file << endl;
+    cout << L.Catalog.Catalog_Of_Level_NFA_Maps[39].name << endl;
+    cout << L.Catalog.Catalog_Of_Level_NFA_Maps[39].file << endl;
 
-    cout << L.loadLevel(1); // Load first level if exsists
+    cout << L.loadLevel(0); // Load first level if exsists
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }
