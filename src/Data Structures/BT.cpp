@@ -8,6 +8,11 @@ struct TreeNode{
 	TreeNode* left;
 	TreeNode* right;
 	TreeNode* parent;
+	TreeNode(){
+		left=right=parent=NULL;
+		value=0;
+		id=id+1;
+	}
 	TreeNode(int v){
 		left=right=parent=NULL;
 		value=v;
@@ -58,7 +63,7 @@ class BTQueue{
 			front++;
 		}
 	}
-	TreeNode* front(){
+	TreeNode* frontn(){
 		return root[front];
 	}
 };
@@ -129,7 +134,7 @@ void insert(TreeNode* p, int value){
 		q.enqueue(root);
 
 		while (!q.isEmpty()) {
-			TreeNode* node = q.front();
+			TreeNode* node = q.frontn();
 			q.dequeue();
 			cout << node->value << " ";
 

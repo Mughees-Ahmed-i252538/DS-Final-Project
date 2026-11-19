@@ -3,13 +3,25 @@
 #include"BT.cpp"
 using namespace std;
 
-struct BSTNode{
+struct BSTNode: public TreeNode{
 	int key;
 	int tpayload;
-	TreeNode* n;
-	BSTNode(int v){
-		n->left=n->right=n->parent=NULL;
-		tpayload=0;
+	int height;
+	BSTNode* left;
+	BSTNode* right;
+	BSTNode* parent;
+	BSTNode(){
+		key=tpayload=0;
+		height=1;
+	}
+	BSTNode(int v): TreeNode(v){
+		key=v;
+		tpayload=v;
+		height=1;
+		left=nullptr;
+		left=static_cast <BSTNode*>(TreeNode::left);
+		right=static_cast <BSTNode*>(TreeNode::right);
+		parent=static_cast <BSTNode*>(TreeNode::parent);
 	}
 };
 
@@ -49,6 +61,7 @@ bool searchNode(BSTNode* root, int val){
 	if (val > root->tpayload){
 		return searchNode(root->right, val);
 	}
+	return false;
 }
 
 BSTNode* deleteNode(BSTNode* root, int value) {
@@ -75,7 +88,7 @@ BSTNode* deleteNode(BSTNode* root, int value) {
 			root->right->tpayload = d;
 			return deleteNode(root, value);
 		}
-		if (root->n->left != NULL && root->n->right == NULL){
+		if (root->left != NULL && root->right == NULL){
 			int d = root->tpayload;
 			root->tpayload = root->left->tpayload;
 			root->left->tpayload = d;
