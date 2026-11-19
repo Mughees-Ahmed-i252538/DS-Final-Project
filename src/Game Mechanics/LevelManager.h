@@ -38,23 +38,23 @@ struct LevelCatalog
 
 struct Act_1_Data
 {
-    int *Preorder;
-    int *Inorder;
+    int *Preorder = nullptr;
+    int *Inorder = nullptr;
 };
 
 struct Act_2_Data
 {
-    string InsertOrder;
+    int *InsertOrder = nullptr;
 };
 struct Act_3_Data
 {
-    string InsertOrder;
+    int *InsertOrder = nullptr;
 };
 
 struct Act_4_Data
 {
-    int size = 0; // currently thought data types, Alhamdulilah rab al alameen
-    int *Array = nullptr;
+    // currently thought data types, Alhamdulilah rab al alameen
+    int *Heap = nullptr;
 };
 
 struct LevelData
@@ -63,6 +63,7 @@ struct LevelData
     // They have different datas
     string Description;
     int nodeCount = 0;
+    string mode;
     // This data (above line) will be present in both seeded and stored file inshallah
     //=======================
 
