@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+/*
 struct TreeNode{
 	static int id;
 	int value;
@@ -312,6 +313,8 @@ void display(TreeNode* r){
 		return;
 	}
 	cout<<r->value<<endl;
-	display(r->left);	
-	display(r->right);	
+	display(r->left);
+	display(r->right);
 }
+
+*/

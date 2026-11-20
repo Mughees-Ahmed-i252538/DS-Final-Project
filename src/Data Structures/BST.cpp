@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
-#include"BT.cpp"
+#include "BT.cpp"
 using namespace std;
 
-struct BSTNode: public TreeNode{
+struct BSTNode: public TreeNode {
 	int key;
 	int tpayload;
 	int height;
@@ -150,11 +150,11 @@ void rangeQuery(BSTNode* root, int lo, int hi){
 	if(root==NULL){
 		return;
 	}
-	
+
 	if(root->tpayload==lo && root->tpayload==hi){
 	cout<<"Range is just"<<root->key<<" "<<root->tpayload<<endl;	//the range is only this node
 	}
-	
+
 	if(root->tpayload>lo)
 	{rangeQuery(root->left, lo, hi);
 	}
@@ -162,7 +162,7 @@ void rangeQuery(BSTNode* root, int lo, int hi){
 	{//here you will need to add the event for skipping the entire left subtree
 	//because they are all less than or equal to lower end of range and so are not in the range
 	}
-	
+
 	if(root->tpayload<hi)
 	{rangeQuery(root->right, lo, hi);
 	}
@@ -173,35 +173,35 @@ void rangeQuery(BSTNode* root, int lo, int hi){
 }
 
 int kthSmallest(BSTNode* root, int k) {
-    int count=0;
+	int count=0;
 
-    BSTNode* curr=root;
-    while (curr!=nullptr) {
-        if (curr->left==nullptr) {
-            count++;
-            if (count==k) {
-            	return curr->tpayload;
+	BSTNode* curr=root;
+	while (curr!=nullptr) {
+		if (curr->left==nullptr) {
+			count++;
+			if (count==k) {
+				return curr->tpayload;
 			}
-            curr=curr->right;
-        } else {
-            BSTNode* prev=curr->left;
-            while (prev->right!=nullptr && prev->right!=curr) {
-                prev=prev->right;
-            }
-            if (prev->right==nullptr) {
-                prev->right=curr;
-                curr=curr->left;
-            } else {
-                count++;
-                if (count==k) {
-                	return curr->tpayload;
+			curr=curr->right;
+		} else {
+			BSTNode* prev=curr->left;
+			while (prev->right!=nullptr && prev->right!=curr) {
+				prev=prev->right;
+			}
+			if (prev->right==nullptr) {
+				prev->right=curr;
+				curr=curr->left;
+			} else {
+				count++;
+				if (count==k) {
+					return curr->tpayload;
 				}
-                prev->right=nullptr;
-                curr=curr->right;
-            }
-        }
-    }
-    return -1;
+				prev->right=nullptr;
+				curr=curr->right;
+			}
+		}
+	}
+	return -1;
 }
 
 BSTNode* lcaBST(BSTNode* root, BSTNode* a, BSTNode* b){

@@ -1,10 +1,16 @@
 // Bismillah hirahman nirahim
 #include "UIManager.h"
 
-void SpriteTextBox::scale(sf::Vector2f factor)
+void SpriteTextBox::setSize_Minding_Relative_Size(sf::Vector2f Wanted_Size)
 {
-    Sprite.scale(factor);
-    Text.scale(factor);
+    ::setSize_Sprite(Sprite, Wanted_Size); // We renamed this fucniton but the :: tell it to look in global scope and not the funciton inside class, else recursive call
+
+    float Size_For_Text_Minding_Relative_Difference_x = Wanted_Size.x + Relative_Size_Difference_x;
+    float Size_For_Text_Minding_Relative_Difference_y = Wanted_Size.y + Relative_Size_Difference_y;
+
+    sf::Vector2f Size_For_Text(Size_For_Text_Minding_Relative_Difference_x, Size_For_Text_Minding_Relative_Difference_y);
+
+    ::setSize_Text(Text, Size_For_Text); // Relative differnece in size is box - text size
 }
 
 void SpriteTextBox::move(sf::Vector2f Coordinates)
@@ -13,13 +19,30 @@ void SpriteTextBox::move(sf::Vector2f Coordinates)
     Traslate_And_Centralize_OC_Text_To_Box();
 }
 
+void SpriteTextBox::setRelativeSizeDifference(sf::Vector2f Relative_Size_Difference)
+{
+    Relative_Size_Difference_x = Relative_Size_Difference.x;
+    Relative_Size_Difference_y = Relative_Size_Difference.y;
+}
+
+void SpriteTextBox::setRelativePosDifferenceBwCenters(sf::Vector2f RelativePosDifferenceBwCenters)
+{
+    Relative_Pos_Difference_Bw_Centers_x = RelativePosDifferenceBwCenters.x;
+    Relative_Pos_Difference_Bw_Centers_y = RelativePosDifferenceBwCenters.y;
+}
+
 // Simple texture and font were crashing perhaps reason is getting them as simply texture and font?
 // Yes i thinnk so, it stooped crashing Alhamdulilah
 SpriteTextBox::SpriteTextBox(sf::Texture &Texture, sf::Font &Font) : Sprite(Texture), Text(Font) // Initializer list
 {
-    setOriginToCenter(Text);                  // Makes its origin at center for easier centralizeing
+    /*
+    cout << "Oringal origin" << Text.getOrigin().x << " " << Text.getOrigin().y << endl;
+    setOriginToCenter(Text); // Makes its origin at center for easier centralizeing
+    cout << "New origin" << Text.getOrigin().x << " " << Text.getOrigin().y << endl;
     Traslate_And_Centralize_OC_Text_To_Box(); // This centralizes text to box
     // std::cout << "Centralized Text to box" << endl;
+    */
+    // Issue. The setOrign runs although no string assigned yet, moved this logic to the set sting new fucntion
 }
 
 void SpriteTextBox::draw_on(sf::RenderWindow &window)
@@ -46,7 +69,17 @@ void SpriteTextBox::Traslate_And_Centralize_OC_Text_To_Box()
     float Sprite_pos_y = Sprite.getPosition().y;
     sf::Vector2f Sprite_pos(Sprite_pos_x, Sprite_pos_y); // Mistake was we were only centring not traslating
 
-    Text.setPosition(Sprite_pos + Sprite_Geometric_Center); // First traslated to the position of the sprite, then centered in it trasnlated to its origin
+    sf::Vector2f Relative_Pos_Difference_bw_Centers(Relative_Pos_Difference_Bw_Centers_x, Relative_Pos_Difference_Bw_Centers_y);
+
+    Text.setPosition(Sprite_pos + Sprite_Geometric_Center + Relative_Pos_Difference_bw_Centers); // First traslated to the position of the sprite, then centered in it trasnlated to its origin
+    // also included the relative difference for fine tuning
+}
+
+void SpriteTextBox::setString(string String)
+{
+    Text.setString(String);
+    setOriginToCenter(Text); // This funciton was moved here instead to fix the issue
+    Traslate_And_Centralize_OC_Text_To_Box();
 }
 
 sf::FloatRect letterBox_Viewport_Calculator(sf::View Computer_View, sf::View Wanted_View) // Wanted view is t use macros defined in UiManager inshallah
@@ -92,7 +125,7 @@ sf::FloatRect letterBox_Viewport_Calculator(sf::View Computer_View, sf::View Wan
     // We need ratios of real and wanted, to put black boxes and avoid stretching
 }
 
-void setSize(sf::Sprite &Sprite, sf::Vector2f Wanted_Size)
+void setSize_Sprite(sf::Sprite &Sprite, sf::Vector2f Wanted_Size)
 {
     float Local_Size_x = Sprite.getLocalBounds().size.x;
     float Local_Size_y = Sprite.getLocalBounds().size.y;
@@ -111,6 +144,25 @@ void setSize(sf::Sprite &Sprite, sf::Vector2f Wanted_Size)
     Sprite.setScale(sf::Vector2f(Size_Ratio_x, Size_Ratio_y));
 }
 
+void setSize_Text(sf::Text &Text, sf::Vector2f Wanted_Size) // For some reason compiler can differentiate bw the two based on data types hence we have to rename funtion to seaprate it
+{
+    float Local_Size_x = Text.getLocalBounds().size.x;
+    float Local_Size_y = Text.getLocalBounds().size.y;
+
+    float Wanted_Size_x = Wanted_Size.x;
+    float Wanted_Size_y = Wanted_Size.y;
+
+    float Size_Ratio_x = Wanted_Size_x / Local_Size_x;
+    float Size_Ratio_y = Wanted_Size_y / Local_Size_y; // Note local bounds is the orignal object size not affected by scale or rotation, setScale uses this,
+    // Global bounds on the other hand is the ssize affectedby scaling
+
+    // Now say we want the size that was twice as big as orignal in x axsis
+    // ratio becomes 2
+    // Scale should also be 2
+
+    Text.setScale(sf::Vector2f(Size_Ratio_x, Size_Ratio_y));
+}
+
 void setBgSize(sf::RenderWindow &window, sf::Sprite &Sprite) // We know the size will be view size
 {
     int Window_View_Size_x = window.getView().getSize().x; // these are needed to be able to set sizes of our sprites
@@ -118,16 +170,32 @@ void setBgSize(sf::RenderWindow &window, sf::Sprite &Sprite) // We know the size
 
     sf::Vector2f Wanted_View_Size(Window_View_Size_x, Window_View_Size_y);
 
-    setSize(Sprite, Wanted_View_Size);
+    setSize_Sprite(Sprite, Wanted_View_Size);
 }
 
-void setOriginToCenter(sf::Text &Text)
+void setOriginToCenter(sf::Text &Text) // Issue found, the string was empty when this ran, restructuring the call of this fucniton to fix
 {
-    std::cout << "Set Text Origin to its center" << endl;
+    // std::cout << "Set Text Origin to its center" << endl;
     float Text_Global_Bounds_x = Text.getGlobalBounds().size.x;
     float Text_Global_Bounds_y = Text.getGlobalBounds().size.y;
 
     sf::Vector2f Text_Geometric_Center(Text_Global_Bounds_x / 2, Text_Global_Bounds_y / 2); // cuz orignial origin is at left top
 
+    // cout << "Found Origin " << Text_Global_Bounds_x << " " << Text_Global_Bounds_y << endl;
+
+    // Fixed Alhamdulilah
+
     Text.setOrigin(Text_Geometric_Center); // Because ddefault constructors dont exist for either sprite or font
+}
+
+bool Sprite_has_cursor_on_it(sf::Sprite &Sprite, sf::Vector2f Cursor_Coordiantes)
+{
+    if (Sprite.getGlobalBounds().contains(Cursor_Coordiantes))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
