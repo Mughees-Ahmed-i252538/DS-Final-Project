@@ -2,13 +2,18 @@
 #include <string>
 using namespace std;
 
-/*
+
 struct TreeNode{
 	static int id;
 	int value;
 	TreeNode* left;
 	TreeNode* right;
 	TreeNode* parent;
+	TreeNode(){
+		left=right=parent=NULL;
+		value=0;
+		id=id+1;
+	}
 	TreeNode(int v){
 		left=right=parent=NULL;
 		value=v;
@@ -59,7 +64,7 @@ class BTQueue{
 			front++;
 		}
 	}
-	TreeNode* front(){
+	TreeNode* frontn(){
 		return root[front];
 	}
 };
@@ -130,7 +135,7 @@ void insert(TreeNode* p, int value){
 		q.enqueue(root);
 
 		while (!q.isEmpty()) {
-			TreeNode* node = q.front();
+			TreeNode* node = q.frontn();
 			q.dequeue();
 			cout << node->value << " ";
 
@@ -311,5 +316,3 @@ void display(TreeNode* r){
 	display(r->left);
 	display(r->right);
 }
-
-*/
