@@ -1,7 +1,7 @@
 {
-  "Act": 1,
   "Description": "Bismillah hirahman nirahim. Level 2.Note the only pos value range convention is no longer needed cuz we wwere wrong; self re correction but we are taking aabsolute of neg values so only 0 to pos values come so restriction re applies on the build needing #'s  Act 1; seeded needs seed and max and min for range. shouldnt be neg (Game rule made by team). THere shouldnt be any spaces inside the mode string (Team RUle) Alhamdulilah rab al alameen",
   "Node Count": 10,
+  "Node Cap": 10,
   "Storage Mode": "Seeded",
   "Seed": 0,
   "Max": 10,
