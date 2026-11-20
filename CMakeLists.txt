@@ -25,7 +25,8 @@ FetchContent_MakeAvailable(SFML) #This line actually fetches based on our fetch 
 
 add_executable(Program src/main.cpp
     "src/Data Structures/BST.cpp"
-    "src/Data Structures/MaxHeap.cpp")#Program is the name of the exe file to build; 
+    "src/Data Structures/MaxHeap.cpp"
+    src/Graphics/LayoutEngine.cpp)#Program is the name of the exe file to build; 
 #self as no src folder so deleted /src from main's path
 #Each Program is an exe file, a project can have multiple exe files
 #Program provides a target to include source files in

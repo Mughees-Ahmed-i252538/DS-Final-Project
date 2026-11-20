@@ -7,12 +7,14 @@ struct MaxHeap
 	int cap= CAPACITY;
 	int top=-1;
 	int array[CAPACITY];
+	int filled=0;
 	
 	void buildMaxHeap(int arr[], int s){
 		for (int i=0; i<s; i++){
 		array[++top]=arr[i];
 		Heapify_down(i);
 		}
+		filled=s;
 	}
 	
 	void heapSort(int arr[]){
@@ -41,7 +43,7 @@ struct MaxHeap
 		
 		array[++top]=priority;
 		Heapify_up(top);
-		
+		filled++;
 	}
 	
 	int extractMax()
@@ -59,7 +61,7 @@ struct MaxHeap
 		array[top]=temp;
 		top--;
 		Heapify_down(0);
-		
+		filled--;
 		return Value_To_Return;
 	}
 	
