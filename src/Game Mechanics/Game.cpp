@@ -44,8 +44,8 @@ void Game()
 
     window.setView(Wanted_View);
 
-    MainSc(window); // Window given to main sc
-    //  The first screen toa actually display
+    // MainSc(window); // Window given to main sc
+    //   The first screen toa actually display
 
     // Temporary commenting the display of the screen to run tests on the level manager
 
@@ -55,10 +55,30 @@ void Game()
 
     cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
     // tests
-    cout << L.Catalog.No_of_Levels << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].name << endl;
-    cout << L.Catalog.Catalog_Of_Level_NF_Maps[39].file << endl;
+    // cout << L.Catalog.No_of_Levels << endl;
+    // cout << L.Catalog.Act_1_Levels << endl;
+    // cout << L.Catalog.Act_2_Levels << endl;
+    // cout << L.Catalog.Act_3_Levels << endl;
+    // cout << L.Catalog.Act_4_Levels << endl;
 
-    cout << L.loadLevel(1); // Load first level if exsists
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].name << endl;
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].file << endl;
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].Act_no << endl;
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[1].name << endl;
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[9].file << endl;
+    // Alhamdulilah rab al alameen fix success
+    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[3].Act_no << endl;
+
+    cout << L.loadLevel(0) << endl; // Load first level if exsists
+    // cout << L.CurrentLevelData.Act << endl;
+    // cout << L.CurrentLevelData.Description << endl;
+    // cout << L.CurrentLevelData.mode << endl;
+    // cout << L.CurrentLevelData.nodeCount << endl;
+    // cout << L.CurrentLevelData.seed << endl;
+    // cout << L.CurrentLevelData.Max << endl;
+    // cout << L.CurrentLevelData.Min << endl;
+    // cout << L.CurrentLevelData.act_1_data->Inorder[0] << endl;
+    // cout << L.CurrentLevelData.act_1_data->Preorder[0] << endl;
+
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }

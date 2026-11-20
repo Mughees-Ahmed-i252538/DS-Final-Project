@@ -2,6 +2,8 @@
 // bismillah awala hu wa akhira hu
 #include "LevelManager.h"
 
+// I put the levels in folders but their act is still determined by the number written inside them
+
 int Inclusive_Difference(int a, int b)
 {
     // Issue found we accidnrelty did a-b meanwhile we were sending b as the larger didgit
@@ -9,10 +11,44 @@ int Inclusive_Difference(int a, int b)
     // if negative, it becomesp os cuz size_t is unsigned (a very large pos value)
     // And hence makes the ccut apart substring a very alrge substring
     //(there are possbilities of cuting past the actual stigng present (google) but i didnt go into dtia;s (it seemsb there is a differnce if you use cin.getline)) Allah swt knows best, Alhamdulilah rab al alameen
-    if (b > a)
+    if (b >= a)             // Issue found if the two locations were equal it returned 0, although 1-1 + 1 =1
         return (b - a + 1); // from a to b, a,b inclusive
 
     return 0; // THis means there is an issue with inpputs,
+}
+
+int String_To_Int(string String)
+{
+    int Number = 0; // Represented num
+    int i = 0;
+    while (String[i] != '\0') // I remeber that if both scopes have declared same var, while statemnnt cheks the outer
+    {
+        // cout << String[i] << endl;
+        if (String[i] == '0' || String[i] == '1' || String[i] == '2' || String[i] == '3' || String[i] == '4' || String[i] == '5' || String[i] == '6' || String[i] == '7' || String[i] == '8' || String[i] == '9')
+        {
+            Number *= 10;
+            Number += String[i] - '0'; // Correction (self viewed)/ We need the string char converted to itses number counterpart (added - '0')
+        }
+        i++; // Issue found, we had forgotten to do i++
+
+        // Fixed Alhamdulilah rab al alameen
+    }
+    return Number;
+}
+
+int Count_Char_In_String(string String, char Char)
+{
+    int i = 0;
+    int count = 0;
+    while (String[i] != '\0')
+    {
+        if (String[i] == Char)
+        {
+            count++;
+        }
+        i++; // Same issue discovered had forgotteon to do i++; Fixed Alhamdulilah rab al alameen;
+    }
+    return count;
 }
 
 string trim(string &orignal) // Issue discovered, used char instead of size_t inside trim as well, Fixed Alhamdulilah
@@ -53,7 +89,8 @@ string Cut_Of_String(string &Main, string &output, char Start, char End, bool Ex
 
     if (Start_loc == std::string::npos)
     {
-        cout << "Start not found" << endl;
+        cout << "Start not found, start was: " << Start << "|" << endl;
+
         return "";
     }
     if (End_loc == std::string::npos)
@@ -69,6 +106,10 @@ string Cut_Of_String(string &Main, string &output, char Start, char End, bool Ex
     {
         End_loc -= 1; // To add more checks like out of range check on start and end later inshallah
     }
+    // cout << "Start loc" << Start_loc << endl;
+    // cout << "End loc" << End_loc << endl;
+    // cout << "Inclusive difference" << Inclusive_Difference(Start_loc, End_loc) << endl;
+
     if (Start_loc > End_loc)
     {
         cout << "Start loc greater than end" << endl;
@@ -76,7 +117,7 @@ string Cut_Of_String(string &Main, string &output, char Start, char End, bool Ex
     }
 
     output = Main.substr(Start_loc, Inclusive_Difference(Start_loc, End_loc));
-
+    // cout << "output: " << output << endl;
     if (Remove_from_file)
     {
         if (Exclusive_End && Remove_Till_Orignal_End) // if exclusice end and ! remove till orignal end, then leaves the orignal end in the file
@@ -88,8 +129,173 @@ string Cut_Of_String(string &Main, string &output, char Start, char End, bool Ex
         // THis makes file remmove orignal string from Main
         // If xclusive_End&&Remove_Till_Orignal_End this also removes orignal ending char from the string
     }
+    // cout << "output: " << output << endl;
 
     return output;
+}
+
+string De_Edge(string &String, char Start, char End, bool To_Also_Remove_Start_And_End_Chars = 0)
+{ // the removes everything other than string between start char (found from start forwards) and end char (found from end side inwards)
+    size_t Start_loc = String.find_first_of(Start);
+
+    size_t End_loc = String.find_last_of(End);
+
+    if (Start_loc == std::string::npos)
+    {
+        cout << "Start not found" << endl;
+        return String; // dont de edge
+    }
+    if (End_loc == std::string::npos)
+    {
+        cout << "End not found" << endl;
+        return String;
+    }
+
+    if (Start_loc == End_loc)
+    {
+        cout << "While trying to de edge, Start and end gave same character, pnly one such found (start and end location are same): For now this is considered an error" << endl;
+    } // this must be checked before doing Startloc+1 adn ened loc- 1 (that would make the range end before the start in this case, would also flip this ways if start == end-1 (in which case the watnted string is empty))
+    // But this single char one is in issue always
+    // THe start==end-1 is issue only if we want to remove thiose cahrs as well and are doing +1 in start lco and -1 in end loc (this found make range be flipped... liike (from 2 to 1(2,1) although in math range shorter val first))Allah swt knows best ALhamdulilah rab al alameen(inverse range may cause issues if used in differnece and then for cropping strings)
+
+    if (To_Also_Remove_Start_And_End_Chars)
+    {
+
+        if (Start_loc == End_loc - 1) // means eg "" is string, data is empty (then simply ret empty string)
+        {
+            String = "";
+            return String;
+        }
+
+        Start_loc += 1;
+        End_loc -= 1;
+    }
+
+    if (Start_loc > End_loc)
+    {
+        cout << "Start loc greater than end" << endl;
+        return String; // dont de edge
+    }
+
+    String = String.substr(Start_loc, Inclusive_Difference(Start_loc, End_loc));
+    return String;
+}
+
+int Take_One_Int_Cut(string &Main, int &int_output, char Start, char End, bool Exclusive_Start, bool Exclusive_End, bool Remove_from_file, bool Remove_Till_Orignal_End = 0)
+{ // Added int& output parameter  for similarty to similar functions
+    // Expecting we get : and '
+    string String_Of_Num;
+
+    // cout << "Main: " << Main << endl;
+    //  The string sent in place of output string is string made in this funciton (cuz that isnt needed in output of this function), Alhamdulilah
+    // cout << "Start :" << Start << " End: " << End << endl;
+    Cut_Of_String(Main, String_Of_Num, Start, End, Exclusive_Start, Exclusive_End, Remove_from_file, Remove_Till_Orignal_End);
+    // cout << "Take one int cut: " << endl;
+    // cout << "string: " << String_Of_Num << endl;
+    int Int_of_Num = String_To_Int(String_Of_Num);
+    // cout << Int_of_Num << endl;
+    int_output = Int_of_Num;
+    return Int_of_Num;
+}
+
+string Take_One_String_Cut(string &Main, string &output, char Start, char End, bool Exclusive_Start, bool Exclusive_End, bool Remove_from_file, bool Remove_Till_Orignal_End = 0, bool DeEdgeSoroundingQurations = 1) // issue 1 found the [] doesnt have qutatons
+{
+    // Assuming we get : and ,
+    // cout << "Test 2" << endl;
+    Cut_Of_String(Main, output, Start, End, Exclusive_Start, Exclusive_End, Remove_from_file, Remove_Till_Orignal_End);
+    // cout << "Test 3" << endl;
+    //  This cut we have gotten may be ("   " ) hhave spaces and not removed " 's
+    //  We cant simply do cut of string because this fucniton does two find first of, while we need to do one find last of for the ending edge, we have to de_edge
+    if (DeEdgeSoroundingQurations)
+    {
+        // cout << "Test 4" << endl; // The issue is happeneing inside De edge
+        // cout << "The output taken from the file which became: " << Main << " is: " << output << " and the starting and ending chars were |" << Start << "| and |" << End << "| respectively" << endl;
+        De_Edge(output, '\"', '\"', true); // true makes it also remove start and end
+        // cout << "Test 5" << endl;
+    }
+    return output;
+}
+// Remember here; unlike other fucntions of take cut, this returns error code not output redundantly; Returned is error code. Alhamdulilah rab al alameen
+int Take_Int_Array_Cut(string &Main, int *&int_output_DMAd_Array_Or_Nullptr, int size, bool Remove_from_file, bool Remove_Following_Comma_After_Array_Ends)
+{ // Types are read from right to left in cpp, *& is refrence to a ptr
+    // Considering size is given before the array always (because are writinf levels like so ALhamdulilah)
+
+    if (size <= 0)
+    {
+        cout << "Size: " << size << " is 0 or neg" << endl;
+        return -1;
+    }
+
+    // If nullptr then then dmas it, else treats as already dmaed
+
+    if (int_output_DMAd_Array_Or_Nullptr == nullptr)
+    {
+        int_output_DMAd_Array_Or_Nullptr = new int[size];
+    }
+
+    // error check may like no of commas check may be included later inshallah
+    // First we must separate the array from the file_content
+
+    string Array;                                                                 // Issue coming here
+    Take_One_String_Cut(Main, Array, '[', ']', false, false, true, false, false); // We are not excluding the surrounding brackets [] from the string we take in, but we are removing the string from Main
+    // Issue found we were deedging to remove " " but this [] didnt have any
+    // Second issue, for some reason cuz we were doing string Array = the n usign array in parameters, it was causinga starge string in array changed that, Alhamdulilah rab al alameen
+    // cout << "String for getting array: " << Array << endl;
+    // cout << "File: " << Main << endl; // File and string getting for array are correct but decided is wrong
+    // Now to also remove the comma after the array if it exsists
+    if (Remove_Following_Comma_After_Array_Ends)
+    {
+        size_t Comman_loc = Main.find_first_of(',');
+
+        // To add checks later if needed inshallah
+
+        Comman_loc += 1;
+
+        Main = Main.substr(Comman_loc); // this removes the string with first , and the things before it Alhamdulilah
+    }
+    // cout << "File: " << Main << endl;
+    //  if only one element [etc]
+    int Buffer_int = 0; // A reusable buffer int fpr getting indiviaual vals befiore putting into array
+    // So we can safely apply checks if we want to add into code later inshallah
+    if (size == 1)
+    {
+        Buffer_int = Take_One_Int_Cut(Main, Buffer_int, '[', ']', true, true, true, true); // Now i think the exxlcusive start and end bools for take one int were unecessary other than for if we dont want to remove, Allah swt knwos best
+        // If needed apply checks
+        int_output_DMAd_Array_Or_Nullptr[0] = Buffer_int;
+        return 1; // Successful run
+    }
+    // if 2 or more
+
+    else
+    {
+        // first int
+        Take_One_Int_Cut(Array, Buffer_int, '[', ',', true, true, true, true); // removed the buffer= at start
+        int_output_DMAd_Array_Or_Nullptr[0] = Buffer_int;
+        // cout << int_output_DMAd_Array_Or_Nullptr[0] << endl;
+        // cout << "file: " << Array << endl; // issue found: using main to search for the charcter, although we took apart the needed characters in an Array string, Alhamdulilah rab al alameen
+        // middle ints
+        for (int i = 1; i < size - 1; i++) // rus after first (0th) runs till one berfore end
+        {
+            Take_One_Int_Cut(Array, Buffer_int, Array[0], ',', false, true, true, true); // As previous , has been removed, the first char in the file_content should be the first char of int strin either space or part of umber , we cnant exlcude this from the int striing therefore. Hence this ararangement\
+            //Second issue for first charcter we sent from main instead of from array too Alhamdulilah rab al alameen
+            int_output_DMAd_Array_Or_Nullptr[i] = Buffer_int;
+            // cout << int_output_DMAd_Array_Or_Nullptr[i] << endl;
+            // cout << "file: " << Array << endl;
+        }
+
+        // last int
+        Take_One_Int_Cut(Array, Buffer_int, Array[0], ']', false, true, true, true); // As previous , has been removed, the first char in the file_content should be the first char of int strin either space or part of umber , we cnant exlcude this from the int striing therefore. Hence this ararangement
+        // same issue here
+        int_output_DMAd_Array_Or_Nullptr[size - 1] = Buffer_int;
+
+        // cout << int_output_DMAd_Array_Or_Nullptr[size - 1] << endl;
+        // cout << "file: " << Array << endl;
+        return 1; // Success
+    }
+
+    return 0; // Placeholder output, current logic shouldnt trigger it Alhamdulilah rab al alameen
+
+    // if only 2 element [1,2]
 }
 
 int LevelManager::loadCatalogue() // needs var renaming for ease of understanding inshallah
@@ -145,44 +351,10 @@ int LevelManager::loadCatalogue() // needs var renaming for ease of understandin
     return 1; // Means ok
 }
 
-int String_To_Int(string String)
-{
-    int Number = 0; // Represented num
-    int i = 0;
-    while (String[i] != '\0') // I remeber that if both scopes have declared same var, while statemnnt cheks the outer
-    {
-        // cout << String[i] << endl;
-        if (String[i] == '0' || String[i] == '1' || String[i] == '2' || String[i] == '3' || String[i] == '4' || String[i] == '5' || String[i] == '6' || String[i] == '7' || String[i] == '8' || String[i] == '9')
-        {
-            Number *= 10;
-            Number += String[i] - '0'; // Correction (self viewed)/ We need the string char converted to itses number counterpart (added - '0')
-        }
-        i++; // Issue found, we had forgotten to do i++
-
-        // Fixed Alhamdulilah rab al alameen
-    }
-    return Number;
-}
-
-int Count_Char_In_String(string String, char Char)
-{
-    int i = 0;
-    int count = 0;
-    while (String[i] != '\0')
-    {
-        if (String[i] == Char)
-        {
-            count++;
-        }
-        i++; // Same issue discovered had forgotteon to do i++; Fixed Alhamdulilah rab al alameen;
-    }
-    return count;
-}
-
 int LevelCatalog::writeCatalogue(string file_content) // This data is the file ocnverted to a string
 {
 
-    if (this->Catalog_Of_Level_NF_Maps != nullptr)
+    if (this->Catalog_Of_Level_NFA_Maps != nullptr)
     {
         cout << "Catalog already exsists in memeory " << endl; // Should delte it fitst then load another
         return -1;                                             // A catalo is already preent delete this one first
@@ -353,6 +525,9 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
     file_content = file_content.substr(starting_char_loc, Inclusive_Difference(starting_char_loc, ending_char_loc));
     //=====================================================================================
     //  cout << "test 4.5.1" << endl;
+    /*
+
+    Because logic was changed to now have a separate object for each Act this cant be used freely, might be put inside the act inside inshallah
     int no_of_Cols = Count_Char_In_String(file_content, ':');
     if (no_of_Cols != num) // The number of entries != no mentioned in capacity (no of levels != mentioned no of levels)
     {
@@ -372,10 +547,249 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
         cout << "The Number of entries doesnt equal as no of , not = num - 1" << endl;
         return -11;
     }
+    */
     // cout << "test 4.8" << endl;
-    Level_NF_Map *Buffer_For_Catalog_Of_Level_NF_Maps = nullptr; // is so we dont diretly store in important location
-    Buffer_For_Catalog_Of_Level_NF_Maps = new Level_NF_Map[num];
+    Level_NFA_Map *Buffer_For_Catalog_Of_Level_NFA_Maps = nullptr; // is so we dont diretly store in important location
+    Buffer_For_Catalog_Of_Level_NFA_Maps = new Level_NFA_Map[num];
     // cout << "test 5" << endl;
+    int Levels_Read_Already_From_0 = 0; // For our ease
+    int Current_Act = 1;
+    // I belive we can also do this by iteration
+    // Inshallah if time to refactor
+    //+++++++++++++++++++++++++++++++++
+
+    int Buffer_Act_1_Levels;
+    Take_One_Int_Cut(file_content, Buffer_Act_1_Levels, ':', ',', true, true, true, true); // gets the no of acts_1 Levels
+
+    string Act_1_Levels_String;
+    Take_One_String_Cut(file_content, Act_1_Levels_String, '{', '}', true, true, true, true, false);
+
+    string Buffer_Level_Name;
+    string Buffer_File_Name_And_Path;
+    for (int i = 0; i < Buffer_Act_1_Levels - 1; i++)
+    {
+        // We have to take the character from start to ,; and we have to go till last -1 level cuz the last level doesnt have any ending ,
+        // Note we removed the {} in our funciton call
+
+        Take_One_String_Cut(Act_1_Levels_String, Buffer_Level_Name, Act_1_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        Take_One_String_Cut(Act_1_Levels_String, Buffer_File_Name_And_Path, Act_1_Levels_String[0], ',', false, true, true, true, true);
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+    }
+
+    if (Buffer_Act_1_Levels != 0)                                                                                                // if no level in act 1
+    {                                                                                                                            // Issue found, these ending levels arent loading, and perhaps they are the ones to give starting char not found
+        Take_One_String_Cut(Act_1_Levels_String, Buffer_Level_Name, Act_1_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // But the na,es reflect well the filenames dont appear
+        //  Inshallah this will work
+        cout << "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+        cout << "String Act 1 level string,: " << Act_1_Levels_String << endl;
+        cout << "The character: " << Act_1_Levels_String[0] << "|" << endl;
+
+        // Issue discovered: both start and end of this string are coincidently spaces
+        // The cut out string uses find first of
+        // So it gets the same space in both start and end
+        // The output string becomes | | (a space), which on trying to de-egde gives starting char not found
+        // To solve we have to take a differnt approach, like sending the "" as to be excluded start and end and turning of remove quotation
+        //  cout << "The character: " << Act_1_Levels_String[1] << endl;
+        //  cout << "The character: " << Act_1_Levels_String[2] << endl;
+        //  cout << "The character: " << Act_1_Levels_String[3] << endl;
+        //  cout << "The character: " << Act_1_Levels_String[4] << endl;
+
+        // Take_One_String_Cut(Act_1_Levels_String, Buffer_File_Name_And_Path, '\"', '\"', true, true, true, true, false); // puting from first character to last character into the string (as this is last) in this string, remove from orignal and deedge
+        // This was failing due to many reasons, so sought a simpler approach Alhamdulilah rab al alameen
+
+        De_Edge(Act_1_Levels_String, '\"', '\"', true);
+        // Because DeEdge seaches start from start but end from end
+        // If we call it directly, i wont cause issue when the chars are same inshallah
+        // Now we also removed the bounfdary " chars, we simply need to store the string which remaind the last file name into the file name buffer
+        // Alhamdulilah rab al alameen
+        Buffer_File_Name_And_Path = Act_1_Levels_String;
+        // Another issue
+        // The take out string uses find from first for both first and last character
+        // it wont work for having same start and end
+
+        // Simpler approach cosnidered
+        // Since the act string only has the string of needed filename right now
+        // We de egde it directly and store the result in out needed buffer instead
+
+        // So we considered the qutaotoion marks as the boundaries and turned the separately present degeing qutation marks off
+        //..Alhamdamdulilah rab al alameen
+
+        cout << "Test 1" << endl;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+        // We must remove the starting , in the file for the first 3 acts
+    }
+    size_t Comma_loc = file_content.find_first_of(','); // must do for acts before act 4';
+    Comma_loc += 1;                                     // to remove the , as well
+    file_content = file_content.substr(Comma_loc);
+
+    // file_content
+
+    //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    // Current act changes to 2
+
+    //=====================================
+
+    Current_Act = 2;
+    int Buffer_Act_2_Levels;
+    Take_One_Int_Cut(file_content, Buffer_Act_2_Levels, ':', ',', true, true, true, true); // gets the no of acts_1 Levels
+
+    string Act_2_Levels_String;
+    Take_One_String_Cut(file_content, Act_2_Levels_String, '{', '}', true, true, true, true, false);
+
+    for (int i = 0; i < Buffer_Act_2_Levels - 1; i++)
+    {
+        // We have to take the character from start to ,; and we have to go till last -1 level cuz the last level doesnt have any ending ,
+        // Note we removed the {} in our funciton call
+
+        Take_One_String_Cut(Act_2_Levels_String, Buffer_Level_Name, Act_2_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        Take_One_String_Cut(Act_2_Levels_String, Buffer_File_Name_And_Path, Act_2_Levels_String[0], ',', false, true, true, true, true);
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+    }
+
+    if (Buffer_Act_2_Levels != 0)
+    {
+        Take_One_String_Cut(Act_2_Levels_String, Buffer_Level_Name, Act_2_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        // Take_One_String_Cut(Act_2_Levels_String, Buffer_File_Name_And_Path, '\"', '\"', true, true, true, true, false); // puting from first character to last character into the string (as this is last) in this string, remove from orignal and deedge
+        De_Edge(Act_2_Levels_String, '\"', '\"', true);
+        // Because DeEdge seaches start from start but end from end
+        // If we call it directly, i wont cause issue when the chars are same inshallah
+        // Now we also removed the bounfdary " chars, we simply need to store the string which remaind the last file name into the file name buffer
+        // Alhamdulilah rab al alameen
+        Buffer_File_Name_And_Path = Act_2_Levels_String;
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+        // We must remove the starting , in the file for the first 3 acts
+    }
+    Comma_loc = file_content.find_first_of(','); // must do for acts before act 4';
+    Comma_loc += 1;                              // to remove the , as well
+    file_content = file_content.substr(Comma_loc);
+
+    //=====================================
+    Current_Act = 3;
+    int Buffer_Act_3_Levels;
+    Take_One_Int_Cut(file_content, Buffer_Act_3_Levels, ':', ',', true, true, true, true); // gets the no of acts_1 Levels
+
+    string Act_3_Levels_String;
+    Take_One_String_Cut(file_content, Act_3_Levels_String, '{', '}', true, true, true, true, false);
+
+    for (int i = 0; i < Buffer_Act_3_Levels - 1; i++)
+    {
+        // We have to take the character from start to ,; and we have to go till last -1 level cuz the last level doesnt have any ending ,
+        // Note we removed the {} in our funciton call
+
+        Take_One_String_Cut(Act_3_Levels_String, Buffer_Level_Name, Act_3_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        Take_One_String_Cut(Act_3_Levels_String, Buffer_File_Name_And_Path, Act_3_Levels_String[0], ',', false, true, true, true, true);
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+    }
+
+    if (Buffer_Act_3_Levels != 0)
+    {
+        Take_One_String_Cut(Act_3_Levels_String, Buffer_Level_Name, Act_3_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        // Take_One_String_Cut(Act_3_Levels_String, Buffer_File_Name_And_Path, '\"', '\"', true, true, true, true, false); // puting from first character to last character into the string (as this is last) in this string, remove from orignal and deedge
+        De_Edge(Act_3_Levels_String, '\"', '\"', true);
+        // Because DeEdge seaches start from start but end from end
+        // If we call it directly, i wont cause issue when the chars are same inshallah
+        // Now we also removed the bounfdary " chars, we simply need to store the string which remaind the last file name into the file name buffer
+        // Alhamdulilah rab al alameen
+        Buffer_File_Name_And_Path = Act_3_Levels_String;
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+        // We must remove the starting , in the file for the first 3 acts
+    }
+    Comma_loc = file_content.find_first_of(','); // must do for acts before act 4';
+    Comma_loc += 1;                              // to remove the , as well
+    file_content = file_content.substr(Comma_loc);
+
+    //=====================================
+    Current_Act = 4;
+    int Buffer_Act_4_Levels;
+    Take_One_Int_Cut(file_content, Buffer_Act_4_Levels, ':', ',', true, true, true, true); // gets the no of acts_1 Levels
+
+    string Act_4_Levels_String;
+    Take_One_String_Cut(file_content, Act_4_Levels_String, '{', '}', true, true, true, true, false);
+
+    for (int i = 0; i < Buffer_Act_4_Levels - 1; i++)
+    {
+        // We have to take the character from start to ,; and we have to go till last -1 level cuz the last level doesnt have any ending ,
+        // Note we removed the {} in our funciton call
+
+        Take_One_String_Cut(Act_4_Levels_String, Buffer_Level_Name, Act_4_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        Take_One_String_Cut(Act_4_Levels_String, Buffer_File_Name_And_Path, Act_4_Levels_String[0], ',', false, true, true, true, true);
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+    }
+
+    if (Buffer_Act_4_Levels != 0)
+    {
+
+        Take_One_String_Cut(Act_4_Levels_String, Buffer_Level_Name, Act_4_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
+        // Inshallah this will work
+
+        // Take_One_String_Cut(Act_4_Levels_String, Buffer_File_Name_And_Path, '\"', '\"', true, true, true, true, false); // puting from first character to last character into the string (as this is last) in this string, remove from orignal and deedge
+        De_Edge(Act_4_Levels_String, '\"', '\"', true);
+        // Because DeEdge seaches start from start but end from end
+        // If we call it directly, i wont cause issue when the chars are same inshallah
+        // Now we also removed the bounfdary " chars, we simply need to store the string which remaind the last file name into the file name buffer
+        // Alhamdulilah rab al alameen
+        Buffer_File_Name_And_Path = Act_4_Levels_String;
+
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
+
+        Levels_Read_Already_From_0++;
+    }
+    // We must remove the starting , in the file for the first 3 acts
+
+    // This takes out the level
+
+    /*
+    //Because the level was divided into four acts now this logic will be sub applied inshallah
     for (int i = 0; i < num - 1; i++) // for values that end in the ,
     {
         // cout << "test 6" << endl;                             // May put errors check here later if time inshallah
@@ -419,8 +833,8 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
 
         // We can store this name and filename in the ith NF map of Catalog
 
-        Buffer_For_Catalog_Of_Level_NF_Maps[i].name = name;
-        Buffer_For_Catalog_Of_Level_NF_Maps[i].file = filename;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[i].name = name;
+        Buffer_For_Catalog_Of_Level_NFA_Maps[i].file = filename;
 
         // Now we must one by one fetch leavel map of level name to file name one by one
         // FIle name should also have extension in it
@@ -458,9 +872,9 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
 
     string filename = file_content.substr(starting_char_loc, Inclusive_Difference(starting_char_loc, ending_char_loc));
 
-    Buffer_For_Catalog_Of_Level_NF_Maps[num - 1].name = name;
-    Buffer_For_Catalog_Of_Level_NF_Maps[num - 1].file = filename; // last location is n-1
-
+    Buffer_For_Catalog_Of_Level_NFA_Maps[num - 1].name = name;
+    Buffer_For_Catalog_Of_Level_NFA_Maps[num - 1].file = filename; // last location is n-1
+    */
     // cout << "test 7" << endl;
     // Alhamdulilah rab al alameen test 7 ran now to check if final catalog has the data copied properly inshallah
     //  this is final filename
@@ -474,19 +888,25 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
     //==================================================================
     // Considering we put other validation checks and no issues arrived we can safely trasnfer buffer to data of this and in the main catalog
     this->No_of_Levels = num; // Cant be neg, if written neg the function, string to number will end up removing it cuz it doesnt cosndierer sign other than numerics
-    this->Catalog_Of_Level_NF_Maps = Buffer_For_Catalog_Of_Level_NF_Maps;
-    cout << "Catalog Write To Store Object Success: " << endl;
-    cout << No_of_Levels << endl;
+    this->Act_1_Levels = Buffer_Act_1_Levels;
+    this->Act_2_Levels = Buffer_Act_2_Levels;
+    this->Act_3_Levels = Buffer_Act_3_Levels;
+    this->Act_4_Levels = Buffer_Act_4_Levels;
+
+    this->Catalog_Of_Level_NFA_Maps = Buffer_For_Catalog_Of_Level_NFA_Maps;
+    cout << "Catalog Write To Store Object Success: " << endl; // Persistent debug output
+    // cout << No_of_Levels << endl;
+    /* This was for testing Alhamdulilah
     //**if we change the logic that if 0 memebrs then still can be initialized, we have to remove this pirce of the debug output, ...Actuakklluy we can make it confitonal
-    if (Catalog_Of_Level_NF_Maps != nullptr)
+    if (Catalog_Of_Level_NFA_Maps != nullptr)
     {
-        cout << Catalog_Of_Level_NF_Maps[0].name << endl; // Atleast first entry must exsists elsewise returns with code 0(empty so not initialized)
-        cout << Catalog_Of_Level_NF_Maps[0].file << endl; // hence we can safely output [0]'s data for now Alhamudlilah rab al alameen
+        cout << Catalog_Of_Level_NFA_Maps[0].name << endl; // Atleast first entry must exsists elsewise returns with code 0(empty so not initialized)
+        cout << Catalog_Of_Level_NFA_Maps[0].file << endl; // hence we can safely output [0]'s data for now Alhamudlilah rab al alameen
     }
     else
     {
-        cout << "Catalog_Of_Level_NF_Maps was nullptr" << endl;
-    }
+        cout << "Catalog_Of_Level_NFA_Maps was nullptr" << endl;
+    }*/
     // If change we have to rem0ve this inshallah
     return 1; // successful write
     // Now we have to locate and cut out the string that contains the levels
@@ -497,7 +917,7 @@ int LevelCatalog::deleteCatalog()
     // See if no catalog exsists , returns 0
     // If exsists deletes it, returns 1
 
-    if (this->Catalog_Of_Level_NF_Maps == nullptr)
+    if (this->Catalog_Of_Level_NFA_Maps == nullptr)
     {
         this->No_of_Levels = 0; // Just confirming if issues with numbers we set it to 0
         return 0;
@@ -505,8 +925,8 @@ int LevelCatalog::deleteCatalog()
 
     // else
 
-    delete[] this->Catalog_Of_Level_NF_Maps;
-    this->Catalog_Of_Level_NF_Maps = nullptr; // Cuz nullptr is checked later on (alhamdulialah rab al alameen) (This may be reused)
+    delete[] this->Catalog_Of_Level_NFA_Maps;
+    this->Catalog_Of_Level_NFA_Maps = nullptr; // Cuz nullptr is checked later on (alhamdulialah rab al alameen) (This may be reused)
     this->No_of_Levels = 0;
     return 1; // Deleted current stored map
 }
@@ -521,7 +941,7 @@ LevelCatalog::~LevelCatalog()
 int LevelManager::loadLevel(int id)
 {
     //
-    if (this->Catalog.Catalog_Of_Level_NF_Maps == nullptr)
+    if (this->Catalog.Catalog_Of_Level_NFA_Maps == nullptr)
     {
         cout << "Catalog is empty" << endl;
         return -1;
@@ -534,9 +954,9 @@ int LevelManager::loadLevel(int id)
     }
 
     ifstream file;
-    string filenameAndPath = LEVEL_AND_CATALOG_FILE_PATH;               // Issue was that we put path after name, fixed ALhamdulilah
-    filenameAndPath += this->Catalog.Catalog_Of_Level_NF_Maps[id].file; // Changed simple use of only name to also including path
-    file.open(filenameAndPath);                                         // This correction was added because couldnt load as missing file path
+    string filenameAndPath = LEVEL_AND_CATALOG_FILE_PATH;                // Issue was that we put path after name, fixed ALhamdulilah
+    filenameAndPath += this->Catalog.Catalog_Of_Level_NFA_Maps[id].file; // Changed simple use of only name to also including path
+    file.open(filenameAndPath);                                          // This correction was added because couldnt load as missing file path
 
     if (!file.is_open()) // Issue found, Alhamdulilah, the string inside catalog, for filename of level 2 was missing the _ hence it was getting a not found issue, alhamdulilah rab al alameen
     {
@@ -562,76 +982,6 @@ int LevelManager::loadLevel(int id)
 
     return 1; // Success
 }
-
-string De_Edge(string &String, char Start, char End, bool To_Also_Remove_Start_And_End_Chars = 0)
-{ // the removes everything other than string between start char (found from start forwards) and end char (found from end side inwards)
-    size_t Start_loc = String.find_first_of(Start);
-
-    size_t End_loc = String.find_last_of(End);
-
-    if (Start_loc == std::string::npos)
-    {
-        cout << "Start not found" << endl;
-        return String; // dont de edge
-    }
-    if (End_loc == std::string::npos)
-    {
-        cout << "End not found" << endl;
-        return String;
-    }
-
-    if (Start_loc == End_loc)
-    {
-        cout << "Start and end gave same character, pnly one such found (start and end location are same): For now this is considered an error" << endl;
-    } // this must be checked before doing Startloc+1 adn ened loc- 1 (that would make the range end before the start in this case, would also flip this ways if start == end-1 (in which case the watnted string is empty))
-    // But this single char one is in issue always
-    // THe start==end-1 is issue only if we want to remove thiose cahrs as well and are doing +1 in start lco and -1 in end loc (this found make range be flipped... liike (from 2 to 1(2,1) although in math range shorter val first))Allah swt knows best ALhamdulilah rab al alameen(inverse range may cause issues if used in differnece and then for cropping strings)
-
-    if (To_Also_Remove_Start_And_End_Chars)
-    {
-
-        if (Start_loc == End_loc - 1) // means eg "" is string, data is empty (then simply ret empty string)
-        {
-            String = "";
-            return String;
-        }
-
-        Start_loc += 1;
-        End_loc -= 1;
-    }
-
-    if (Start_loc > End_loc)
-    {
-        cout << "Start loc greater than end" << endl;
-        return String; // dont de edge
-    }
-
-    String = String.substr(Start_loc, Inclusive_Difference(Start_loc, End_loc));
-    return String;
-}
-
-int Take_One_Int_Cut(string &Main, int &int_output, char Start, char End, bool Exclusive_Start, bool Exclusive_End, bool Remove_from_file, bool Remove_Till_Orignal_End = 0)
-{ // Added int& output parameter  for similarty to similar functions
-    // Expecting we get : and '
-    string String_Of_Num;
-    // The string sent in place of output string is string made in this funciton (cuz that isnt needed in output of this function), Alhamdulilah
-    Cut_Of_String(Main, String_Of_Num, Start, End, Exclusive_Start, Exclusive_End, Remove_from_file, Remove_Till_Orignal_End);
-    int Int_of_Num = String_To_Int(String_Of_Num);
-    int_output = Int_of_Num;
-    return Int_of_Num;
-}
-
-string Take_One_String_Cut(string &Main, string &output, char Start, char End, bool Exclusive_Start, bool Exclusive_End, bool Remove_from_file, bool Remove_Till_Orignal_End = 0)
-{
-    // Assuming we get : and ,
-    Cut_Of_String(Main, output, Start, End, Exclusive_Start, Exclusive_End, Remove_from_file, Remove_Till_Orignal_End);
-    // This cut we have gotten may be ("   " ) hhave spaces and not removed " 's
-    // We cant simply do cut of string because this fucniton does two find first of, while we need to do one find last of for the ending edge, we have to de_edge
-
-    De_Edge(output, '\"', '\"', true); // true makes it also remove start and end
-    return output;
-}
-
 int LevelData::writeData(string file_content)
 {
     if (this->act_1_data != nullptr || this->act_2_data != nullptr || this->act_3_data != nullptr || this->act_4_data != nullptr)
@@ -674,7 +1024,7 @@ int LevelData::writeData(string file_content)
 
     // Have to read the act
     string Act_No_String;
-    Cut_Of_String(file_content, Act_No_String, ':', ',', true, true, true, true);
+    Cut_Of_String(file_content, Act_No_String, ':', ',', true, true, true, true); // Plan to swtich store format to have to write the act no inside function inshallah
     // Sees act number
     int Buffer_Act_No = String_To_Int(Act_No_String);
 
@@ -727,17 +1077,97 @@ int LevelData::writeData(string file_content)
     {
         // Logic 1
         cout << "stored mode" << endl; // persistent output ,for debugging
+
+        if (Buffer_Act_No == 1)
+        {
+            int *Buffer_Inorder = nullptr;
+            // cout << "File: " << file_content << endl;
+            Take_Int_Array_Cut(file_content, Buffer_Inorder, Buffer_Nodecount, true, true); // later to confirm and puti nsdie act if success in this if block inshallah
+            /*
+            cout << "Inorder:  ";
+            for (int i = 0; i < Buffer_Nodecount; i++)
+            {
+                cout << Buffer_Inorder[i];
+            }
+            cout << endl;*/
+            // cout << "File: " << file_content << endl;
+            int *Buffer_Preorder = nullptr;                                                   // This nullptr is critical else array desnt get initailized
+            Take_Int_Array_Cut(file_content, Buffer_Preorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            Act_1_Data *Buffer_Act_1_Data = new Act_1_Data;
+            Buffer_Act_1_Data->Inorder = Buffer_Inorder;
+            Buffer_Act_1_Data->Preorder = Buffer_Preorder;
+
+            /*cout << "Preorder: ";
+            for (int i = 0; i < Buffer_Nodecount; i++)
+            {
+
+                cout << Buffer_Preorder[i];
+            }
+            cout << endl;*/
+            // Considering everuthing is validated atp
+
+            this->act_1_data = Buffer_Act_1_Data;
+        }
+        else if (Buffer_Act_No == 2)
+        {
+            int *Buffer_Insertorder;
+            Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            Act_2_Data *Buffer_Act_2_Data = new Act_2_Data;
+            Buffer_Act_2_Data->InsertOrder = Buffer_Insertorder;
+        }
+        else if (Buffer_Act_No == 3)
+        {
+            int *Buffer_Insertorder;
+            Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            Act_3_Data *Buffer_Act_3_Data = new Act_3_Data;
+            Buffer_Act_3_Data->InsertOrder = Buffer_Insertorder;
+        }
+        else if (Buffer_Act_No == 4)
+        {
+            int *Buffer_Heap;
+            Take_Int_Array_Cut(file_content, Buffer_Heap, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            Act_4_Data *Buffer_Act_4_Data = new Act_4_Data;
+            Buffer_Act_4_Data->Heap = Buffer_Heap;
+        }
     }
     else if (Buffer_Mode == "Seeded") // it appears we have used Seeded  instead of seed, which sounds more proper so going with thism Alhamdulilah rab al alameen
     {
         // Logic 2
-        cout << "seed mode" << endl; // persistent output ,for debugging
+        cout << "seeded mode" << endl; // Found issue, forgot to get seed before  max, so max got seed val, and min got both max and min, (cuz the get cut of string ran till })                                                               // persistent output ,for debugging
+        int Buffer_Seed = Take_One_Int_Cut(file_content, Buffer_Seed, ':', ',', true, true, true, true);
+        int Buffer_Max = Take_One_Int_Cut(file_content, Buffer_Max, ':', ',', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
+        int Buffer_Min = Take_One_Int_Cut(file_content, Buffer_Min, ':', '}', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
+        // NOte we didnt remove ending } in this function
+        cout << "Seed: " << Buffer_Seed << " Max:" << Buffer_Max << " min: " << Buffer_Min << endl;
+
+        if (Buffer_Act_No == 1)
+        {
+            // Generation logic for a tree using rand, the gettign its inorder and preorder
+        }
+        else if (Buffer_Act_No == 2)
+        {
+        }
+        else if (Buffer_Act_No == 3)
+        {
+        }
+        else if (Buffer_Act_No == 4)
+        {
+        }
+
+        this->seed = Buffer_Seed; // in seeded mode, irrespective of act these hold, Alhamdulilah
+        this->Max = Buffer_Max;
+        this->Min = Buffer_Min;
     }
     else
     {
         cout << "Invlaid Mode" << endl;
         return -6;
     }
+
+    this->Act = Buffer_Act_No; // Irrespective of mode or act this holds, Alhamdulilah
+    this->Description = Buffer_Description;
+    this->nodeCount = Buffer_Nodecount;
+    this->mode = Buffer_Mode;
 
     return 1; // Standard success
 }

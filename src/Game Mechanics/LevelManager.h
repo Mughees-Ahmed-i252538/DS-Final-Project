@@ -11,16 +11,22 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-struct Level_NF_Map // Level Name, File name map
+struct Level_NFA_Map // Level Name, File name map
 {
     string name; // although map there isnt any restructions on repeats
     string file;
+    int Act_no = 0; // Structure update now structure uses
 };
 
 struct LevelCatalog
 {
     int No_of_Levels = 0;
-    Level_NF_Map *Catalog_Of_Level_NF_Maps = nullptr;
+    int Act_1_Levels = 0;
+    int Act_2_Levels = 0;
+    int Act_3_Levels = 0;
+    int Act_4_Levels = 0;
+
+    Level_NFA_Map *Catalog_Of_Level_NFA_Maps = nullptr;
 
     // for returning error occured/ successful close states
     int writeCatalogue(string Json_Levels_Catalog_File);
@@ -32,23 +38,23 @@ struct LevelCatalog
 
 struct Act_1_Data
 {
-    string Preorder;
-    string Inorder;
+    int *Preorder = nullptr;
+    int *Inorder = nullptr;
 };
 
 struct Act_2_Data
 {
-    string InsertOrder;
+    int *InsertOrder = nullptr;
 };
 struct Act_3_Data
 {
-    string InsertOrder;
+    int *InsertOrder = nullptr;
 };
 
 struct Act_4_Data
 {
-    int size = 0; // currently thought data types, Alhamdulilah rab al alameen
-    int *Array = nullptr;
+    // currently thought data types, Alhamdulilah rab al alameen
+    int *Heap = nullptr;
 };
 
 struct LevelData
@@ -57,6 +63,7 @@ struct LevelData
     // They have different datas
     string Description;
     int nodeCount = 0;
+    string mode;
     // This data (above line) will be present in both seeded and stored file inshallah
     //=======================
 
