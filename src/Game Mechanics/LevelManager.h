@@ -15,7 +15,13 @@ struct Level_NFA_Map // Level Name, File name map
 {
     string name; // although map there isnt any restructions on repeats
     string file;
-    int Act_no = 0; // Structure update now structure uses
+    int Act_no = 0;      // Structure update now structure uses
+    bool Locked = false; // a fucntion locks this depending on catalog previous level
+    int Stars = 0;       // Used for seeing score
+
+    int Lock(); // Done be a camign and saves as we load the catalog, unless save loaded it unlocks first level and locks the rest
+    int Unlock();
+    int setStars(int Stars); // Depending on saves else all are 0 at start
 };
 
 struct LevelCatalog
@@ -33,28 +39,35 @@ struct LevelCatalog
 
     int deleteCatalog();
 
+    // Locks and starts at start are determined by the two funcs cabout start condition and not by the writeCatalog Alhamdulilah rab al alameen
+
+    int Set_Default_CampaignStartCondition(); // set all stars 0, only first level state unlcoked rest locked
+
+    int SetCustom_Campaign_StartCondition(bool *Level_Lock_States, string *Level_Filenames, int Level_Starts, int size); // This also
+
     ~LevelCatalog();
 };
 
 struct Act_1_Data
 {
-    int *Preorder = nullptr;
-    int *Inorder = nullptr;
+    // int *Preorder = nullptr;
+    // int *Inorder = nullptr;
 };
 
 struct Act_2_Data
 {
-    int *InsertOrder = nullptr;
+    // int *InsertOrder = nullptr;
+    bool Forced_Skewness = false;
 };
 struct Act_3_Data
 {
-    int *InsertOrder = nullptr;
+    // int *InsertOrder = nullptr;
 };
 
 struct Act_4_Data
 {
     // currently thought data types, Alhamdulilah rab al alameen
-    int *Heap = nullptr;
+    // int *Heap = nullptr;
 };
 
 struct LevelData
@@ -64,8 +77,10 @@ struct LevelData
     string Description;
     int nodeCount = 0;
     string mode;
-    // This data (above line) will be present in both seeded and stored file inshallah
-    //=======================
+    int NodeCapacity = 0;
+    string Tree; // kept as eg 19 29 291 # # #
+    // Had accidently did tree=0; // Which throws logic error, we cant do that
+    //  This data (above line) will be present in both seeded and stored file inshallah
 
     int seed = 0; // if no
     int Max = 0;
@@ -76,9 +91,14 @@ struct LevelData
     Act_1_Data *act_1_data = nullptr;
     Act_2_Data *act_2_data = nullptr;
     Act_3_Data *act_3_data = nullptr;
-    Act_4_Data *act_4_data = nullptr;
+    Act_4_Data *act_4_data = nullptr; // Only dma storage are the act datas
 
-    int writeData(string file_content);
+    //=======================
+    // For displaying in capaign
+
+    //======================
+
+    int writeData(string file_content, int Act_No);
     int deleteData();
 };
 

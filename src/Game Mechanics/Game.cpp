@@ -22,7 +22,7 @@ void Game()
 {
     cout << "Bismillah hirahman nirahim Game Started" << endl;
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Fill The Vault", sf::Style::Default, sf::State::Windowed); // This opens in style of default with title bar and the size is of desktop, fullscreened (sfml 3 split fullscreen from style to a 4th paramter state)
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Fill The Vault", sf::Style::Default, sf::State::Fullscreen); // This opens in style of default with title bar and the size is of desktop, fullscreened (sfml 3 split fullscreen from style to a 4th paramter state)
     // gets size of window
 
     cout << "Bismillah hirahman nirahim Window Made" << endl;
@@ -44,17 +44,17 @@ void Game()
 
     window.setView(Wanted_View);
 
-    // MainSc(window); // Window given to main sc
+    LevelManager LevelManager;
+    MainSc(window, LevelManager); // Window given to main sc
     //   The first screen toa actually display
 
     // Temporary commenting the display of the screen to run tests on the level manager
 
     window.close();
 
-    LevelManager L;
+    // cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
+    //  tests
 
-    cout << L.loadCatalogue(); // Loading successul? also putting print the string sent to write Catalog using cout before sending to see what is sent is it correct
-    // tests
     // cout << L.Catalog.No_of_Levels << endl;
     // cout << L.Catalog.Act_1_Levels << endl;
     // cout << L.Catalog.Act_2_Levels << endl;
@@ -62,14 +62,16 @@ void Game()
     // cout << L.Catalog.Act_4_Levels << endl;
 
     // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].name << endl;
+
     // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].file << endl;
     // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[0].Act_no << endl;
-    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[1].name << endl;
-    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[9].file << endl;
-    // Alhamdulilah rab al alameen fix success
-    // cout << L.Catalog.Catalog_Of_Level_NFA_Maps[3].Act_no << endl;
+    //  cout << L.Catalog.Catalog_Of_Level_NFA_Maps[1].name << endl;
+    //  cout << L.Catalog.Catalog_Of_Level_NFA_Maps[9].file << endl;
+    //  Alhamdulilah rab al alameen fix success
+    //  cout << L.Catalog.Catalog_Of_Level_NFA_Maps[3].Act_no << endl;
 
-    cout << L.loadLevel(0) << endl; // Load first level if exsists
+    // cout << L.loadLevel(0) << endl; // Load first level if exsists
+
     // cout << L.CurrentLevelData.Act << endl;
     // cout << L.CurrentLevelData.Description << endl;
     // cout << L.CurrentLevelData.mode << endl;
@@ -79,6 +81,14 @@ void Game()
     // cout << L.CurrentLevelData.Min << endl;
     // cout << L.CurrentLevelData.act_1_data->Inorder[0] << endl;
     // cout << L.CurrentLevelData.act_1_data->Preorder[0] << endl;
+    // L.CurrentLevelData.act_2_data->InsertOrder[0];
+
+    // cout << L.CurrentLevelData.Act << endl;
+    // cout << L.CurrentLevelData.Description << endl;
+    // cout << L.CurrentLevelData.mode << endl;
+    // cout << L.CurrentLevelData.NodeCapacity << endl;
+    // cout << L.CurrentLevelData.nodeCount << endl;
+    // cout << L.CurrentLevelData.Tree << endl;
 
     cout << "Alhamdulilah rab al alameen game ended" << endl;
 }

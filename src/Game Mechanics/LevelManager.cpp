@@ -1,5 +1,9 @@
 // Bismillah hirahman nirahim
 // bismillah awala hu wa akhira hu
+
+#ifndef LEVELMANAGER
+#define LEVELMANAGER
+
 #include "LevelManager.h"
 
 // I put the levels in folders but their act is still determined by the number written inside them
@@ -15,6 +19,42 @@ int Inclusive_Difference(int a, int b)
         return (b - a + 1); // from a to b, a,b inclusive
 
     return 0; // THis means there is an issue with inpputs,
+}
+
+int Seeded_Generation(string &To_Be_Made_Tree, int Node_Cap, int Node_Count, int Max, int Min, bool Sorted, bool Duplicates) // This function is still inclomete
+{
+
+    if (Node_Cap <= 0)
+    {
+        cout << "Invlaid size" << endl;
+        return -1;
+    }
+
+    if (Node_Count < 0) // Nodes can be 0 assuming for now
+    {
+        cout << "Invlaid no of nodes present" << endl;
+        return -2;
+    }
+
+    int PossibleVals = Inclusive_Difference(Min, Max); // Range is from Min to Min, so 1,2,3 3-1+1 =3 total nos
+    if (!Duplicates)
+    {
+        if (Node_Count > PossibleVals) // To decide if to use node count here , or node cap( i think node count but depedns on Act (if tell thiat these are the only nodes that can be inserted )Allah swt knows best)
+        {
+            cout << "Size> possible vals and !Duplicated" << endl;
+            return -2;
+        }
+    }
+
+    for (int i = 0; i < Node_Cap; i++) // To set node count no of places = some node, space is gap and # is empty space
+    {
+
+        if (!Duplicates)
+        {
+        }
+    }
+
+    return 1; // Sucess
 }
 
 int String_To_Int(string String)
@@ -296,6 +336,22 @@ int Take_Int_Array_Cut(string &Main, int *&int_output_DMAd_Array_Or_Nullptr, int
     return 0; // Placeholder output, current logic shouldnt trigger it Alhamdulilah rab al alameen
 
     // if only 2 element [1,2]
+}
+
+int Level_NFA_Map::Lock() // Done be a camign and saves as we load the catalog, unless save loaded it unlocks first level and locks the rest
+{
+    this->Locked = true;
+    return 1; // Success
+}
+int Level_NFA_Map::Unlock()
+{
+    this->Locked = false;
+    return 1; // Success
+}
+int Level_NFA_Map::setStars(int Stars)
+{
+    this->Stars = Stars; // issue had forgotten to do return, fixed Alhamdulilah rab al alameen
+    return 1;            // Success
 }
 
 int LevelManager::loadCatalogue() // needs var renaming for ease of understanding inshallah
@@ -588,9 +644,9 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
         Take_One_String_Cut(Act_1_Levels_String, Buffer_Level_Name, Act_1_Levels_String[0], ':', false, true, true, true, true); // first this gets a string till , then it removes the qotations marks, the first location may have the sttarting " so cant remove it in first step or the deedge might throw the start and end are same, on finding the same "
         // But the na,es reflect well the filenames dont appear
         //  Inshallah this will work
-        cout << "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << endl;
-        cout << "String Act 1 level string,: " << Act_1_Levels_String << endl;
-        cout << "The character: " << Act_1_Levels_String[0] << "|" << endl;
+        // cout << "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||" << endl;
+        // cout << "String Act 1 level string,: " << Act_1_Levels_String << endl;
+        // cout << "The character: " << Act_1_Levels_String[0] << "|" << endl;
 
         // Issue discovered: both start and end of this string are coincidently spaces
         // The cut out string uses find first of
@@ -622,7 +678,7 @@ int LevelCatalog::writeCatalogue(string file_content) // This data is the file o
         // So we considered the qutaotoion marks as the boundaries and turned the separately present degeing qutation marks off
         //..Alhamdamdulilah rab al alameen
 
-        cout << "Test 1" << endl;
+        // cout << "Test 1" << endl;
         Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].name = Buffer_Level_Name;
         Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].file = Buffer_File_Name_And_Path;
         Buffer_For_Catalog_Of_Level_NFA_Maps[Levels_Read_Already_From_0].Act_no = Current_Act;
@@ -931,6 +987,27 @@ int LevelCatalog::deleteCatalog()
     return 1; // Deleted current stored map
 }
 
+int LevelCatalog::Set_Default_CampaignStartCondition()
+{
+    // Unlock first, rest stay locked
+    this->Catalog_Of_Level_NFA_Maps[0].Unlock();
+    this->Catalog_Of_Level_NFA_Maps[0].setStars(0);
+
+    for (int i = 1; i < No_of_Levels; i++)
+    {
+        this->Catalog_Of_Level_NFA_Maps[i].Lock();
+        this->Catalog_Of_Level_NFA_Maps[i].setStars(0);
+    }
+
+    return 1;
+}
+
+int SetCustom_Campaign_StartCondition(bool *Level_Lock_States, string *Level_Filenames, int Level_Starts, int size)
+{
+    // sees if size correct and initializes like so, inshallah will be written once save logic is
+    return 1;
+}
+
 LevelCatalog::~LevelCatalog()
 {
     this->deleteCatalog(); // Simply delete using already made function
@@ -938,7 +1015,7 @@ LevelCatalog::~LevelCatalog()
     // Alhamdulilah rab al alameen
 }
 
-int LevelManager::loadLevel(int id)
+int LevelManager::loadLevel(int id) // I think we also need to make detection system to tell if the level descriiton has a comma (because that causes current parcer logic to err..., May Allah help us Ameen)
 {
     //
     if (this->Catalog.Catalog_Of_Level_NFA_Maps == nullptr)
@@ -956,7 +1033,9 @@ int LevelManager::loadLevel(int id)
     ifstream file;
     string filenameAndPath = LEVEL_AND_CATALOG_FILE_PATH;                // Issue was that we put path after name, fixed ALhamdulilah
     filenameAndPath += this->Catalog.Catalog_Of_Level_NFA_Maps[id].file; // Changed simple use of only name to also including path
-    file.open(filenameAndPath);                                          // This correction was added because couldnt load as missing file path
+    cout << "Level file name with path: " << filenameAndPath << endl;
+
+    file.open(filenameAndPath); // This correction was added because couldnt load as missing file path
 
     if (!file.is_open()) // Issue found, Alhamdulilah, the string inside catalog, for filename of level 2 was missing the _ hence it was getting a not found issue, alhamdulilah rab al alameen
     {
@@ -978,11 +1057,13 @@ int LevelManager::loadLevel(int id)
                                          // Had accidently commented this line that concatenates buffer with content whicle commented test outputs, Fixed Alhamdulilah rab al alameen
     }
 
-    int WriteLevelsReturn = this->CurrentLevelData.writeData(file_content);
+    int WriteLevelsReturn = this->CurrentLevelData.writeData(file_content, this->Catalog.Catalog_Of_Level_NFA_Maps[id].Act_no);
 
     return 1; // Success
 }
-int LevelData::writeData(string file_content)
+
+// Note protoype has deafult paramters
+int LevelData::writeData(string file_content, int Act_No_From_Catalog) // To change parameters and add Int act no ,instead of reading act from file see atalogue registry inshallah soon
 {
     if (this->act_1_data != nullptr || this->act_2_data != nullptr || this->act_3_data != nullptr || this->act_4_data != nullptr)
     {
@@ -996,7 +1077,7 @@ int LevelData::writeData(string file_content)
         cout << "File Content is empty" << endl;
         return -1;
     }
-
+    // cout << "Test -1" << endl;
     size_t starting_char_loc = file_content.find_first_not_of("\t\b\n ");
 
     if (file_content[starting_char_loc] != '{') // should have returned location
@@ -1021,24 +1102,14 @@ int LevelData::writeData(string file_content)
         cout << "Ending } in json not found/last char isnt }| logic: outermost non space characters should be {}" << endl;
         return -3; // ending } is missing
     }
+    // cout << "Test 0" << endl;
+    //  Have to read the act
+    int Buffer_Act_No;
 
-    // Have to read the act
-    string Act_No_String;
-    Cut_Of_String(file_content, Act_No_String, ':', ',', true, true, true, true); // Plan to swtich store format to have to write the act no inside function inshallah
-    // Sees act number
-    int Buffer_Act_No = String_To_Int(Act_No_String);
+    cout << "Act Number Gotten From Catalog" << endl; // If this is off
+    Buffer_Act_No = Act_No_From_Catalog;              // removed featiure of reading act no from file if not sent from catalog
 
-    // cout << "Act Num Found:---------------: " << Buffer_Act_No << endl; // Considering issues might arrsie and we ahve to return before storing keeping the act number in a buffer for now
-    //  Ruling against making separate funtion for each act for same reason:
-    //  Actually we can do so and make it return an error code as well
-    //  But i think we can do it simpler using conditons.
-    //  Allah swt knows best, May Allah swt guide us Ameen
-
-    if (Buffer_Act_No <= 0 || Buffer_Act_No > 4)
-    {
-        cout << "Act no out of range" << endl;
-        return -4;
-    }
+    // cout << "Test 0.2" << endl;
 
     // Description also same in each act
 
@@ -1046,6 +1117,7 @@ int LevelData::writeData(string file_content)
     Cut_Of_String(file_content, Buffer_Description, ':', ',', true, true, true, true);
     // cout << "Description found is: " << Buffer_Description << endl; // Issue discovered, there is a comma in the description
     // cout << file_content << endl;
+    // cout << "Test 0.3" << endl;
     De_Edge(Buffer_Description, '\"', '\"', true); // This should remove things other than the string isnide the ""
     // cout << "Description found is after deedging: " << Buffer_Description << endl;
     // Issue found, if the description has a comma (,) in it the parcer detects that, rule is description cant have a comma or a colon, it may use semicols and period. Alhamdulilah rab al alameen
@@ -1055,6 +1127,7 @@ int LevelData::writeData(string file_content)
 
     int Buffer_Nodecount = Take_One_Int_Cut(file_content, Buffer_Nodecount, ':', ',', true, true, true, true);
 
+    int Buffer_NodeCap = Take_One_Int_Cut(file_content, Buffer_NodeCap, ':', ',', true, true, true, true);
     // cout << "Found node count is: " << Buffer_Nodecount << endl; // Alhamdulilah rab al alameen, acurate
 
     if (Buffer_Nodecount < 0)
@@ -1068,21 +1141,22 @@ int LevelData::writeData(string file_content)
         return 2; // I am think an empty structure is fine and valid but shows somehting else on screen hence alloted 2, also we cant really take node insuts after this
     }
 
+    // cout << "Test 1" << endl;
     string Buffer_Mode;
 
     Take_One_String_Cut(file_content, Buffer_Mode, ':', ',', true, true, true, true); // For getting string (this function also rmoves the " and the  spaces around the string (not the ones inside "" but the ones outside "")")Alhamdulilah rab al alameen
 
-    cout << "Mode: " << Buffer_Mode << endl;
+    // cout << "Mode: " << Buffer_Mode << endl;
     if (Buffer_Mode == "Stored") // Alhamdulilah working
     {
         // Logic 1
-        cout << "stored mode" << endl; // persistent output ,for debugging
+        // cout << "stored mode" << endl; // persistent output ,for debugging
 
-        if (Buffer_Act_No == 1)
+        if (Buffer_Act_No == 1) // Node removed the inorder insertorde rstoring logic now storing the tree in preorder # form
         {
-            int *Buffer_Inorder = nullptr;
-            // cout << "File: " << file_content << endl;
-            Take_Int_Array_Cut(file_content, Buffer_Inorder, Buffer_Nodecount, true, true); // later to confirm and puti nsdie act if success in this if block inshallah
+            // int *Buffer_Inorder = nullptr;
+            //  cout << "File: " << file_content << endl;
+            // Take_Int_Array_Cut(file_content, Buffer_Inorder, Buffer_Nodecount, true, true); // later to confirm and puti nsdie act if success in this if block inshallah
             /*
             cout << "Inorder:  ";
             for (int i = 0; i < Buffer_Nodecount; i++)
@@ -1091,11 +1165,11 @@ int LevelData::writeData(string file_content)
             }
             cout << endl;*/
             // cout << "File: " << file_content << endl;
-            int *Buffer_Preorder = nullptr;                                                   // This nullptr is critical else array desnt get initailized
-            Take_Int_Array_Cut(file_content, Buffer_Preorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            // int *Buffer_Preorder = nullptr;                                                   // This nullptr is critical else array desnt get initailized
+            // Take_Int_Array_Cut(file_content, Buffer_Preorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
             Act_1_Data *Buffer_Act_1_Data = new Act_1_Data;
-            Buffer_Act_1_Data->Inorder = Buffer_Inorder;
-            Buffer_Act_1_Data->Preorder = Buffer_Preorder;
+            // Buffer_Act_1_Data->Inorder = Buffer_Inorder;
+            // Buffer_Act_1_Data->Preorder = Buffer_Preorder;
 
             /*cout << "Preorder: ";
             for (int i = 0; i < Buffer_Nodecount; i++)
@@ -1110,48 +1184,75 @@ int LevelData::writeData(string file_content)
         }
         else if (Buffer_Act_No == 2)
         {
-            int *Buffer_Insertorder;
-            Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            // cout << "Test 3" << endl;
+            // int *Buffer_Insertorder;
+            // Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
             Act_2_Data *Buffer_Act_2_Data = new Act_2_Data;
-            Buffer_Act_2_Data->InsertOrder = Buffer_Insertorder;
+            // Buffer_Act_2_Data->InsertOrder = Buffer_Insertorder;
+            this->act_2_data = Buffer_Act_2_Data; // puting in real level data
+            // cout << "Test 4" << endl;
         }
         else if (Buffer_Act_No == 3)
         {
-            int *Buffer_Insertorder;
-            Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            // int *Buffer_Insertorder;
+            // Take_Int_Array_Cut(file_content, Buffer_Insertorder, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
             Act_3_Data *Buffer_Act_3_Data = new Act_3_Data;
-            Buffer_Act_3_Data->InsertOrder = Buffer_Insertorder;
+            // Buffer_Act_3_Data->InsertOrder = Buffer_Insertorder;
+            this->act_3_data = Buffer_Act_3_Data;
         }
         else if (Buffer_Act_No == 4)
         {
-            int *Buffer_Heap;
-            Take_Int_Array_Cut(file_content, Buffer_Heap, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
+            // int *Buffer_Heap;
+            // Take_Int_Array_Cut(file_content, Buffer_Heap, Buffer_Nodecount, true, false); // later to confirm and puti nsdie act if success in this if block inshallah
             Act_4_Data *Buffer_Act_4_Data = new Act_4_Data;
-            Buffer_Act_4_Data->Heap = Buffer_Heap;
+            // Buffer_Act_4_Data->Heap = Buffer_Heap;
+            this->act_4_data = Buffer_Act_4_Data; // These data types serve to tell if an act exsists (if level laoded so keeping them) May Allah swt guide us ameen
         }
+        // Decided that in stored mode the tree will be at end, so inserted act datas will be behind it
+        // Considering only the Tree remains in the string of file content as it is at end
+
+        // De_Edge(file_content, '\"', '\"', true);
+        string Buffer_Tree_String = file_content;
+        cout << "++++++++++++++++++++++++++++" << endl; // Issue found: Tree: there was a colon in string, we also need to forbid that
+        cout << file_content << endl;
+        Take_One_String_Cut(file_content, Buffer_Tree_String, ':', '}', true, true, true, true, true); //
+        this->Tree = Buffer_Tree_String;
     }
     else if (Buffer_Mode == "Seeded") // it appears we have used Seeded  instead of seed, which sounds more proper so going with thism Alhamdulilah rab al alameen
     {
         // Logic 2
-        cout << "seeded mode" << endl; // Found issue, forgot to get seed before  max, so max got seed val, and min got both max and min, (cuz the get cut of string ran till })                                                               // persistent output ,for debugging
+        // cout << "seeded mode" << endl; // Found issue, forgot to get seed before  max, so max got seed val, and min got both max and min, (cuz the get cut of string ran till })                                                               // persistent output ,for debugging
         int Buffer_Seed = Take_One_Int_Cut(file_content, Buffer_Seed, ':', ',', true, true, true, true);
         int Buffer_Max = Take_One_Int_Cut(file_content, Buffer_Max, ':', ',', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
-        int Buffer_Min = Take_One_Int_Cut(file_content, Buffer_Min, ':', '}', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
+        int Buffer_Min = Take_One_Int_Cut(file_content, Buffer_Min, ':', ',', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
         // NOte we didnt remove ending } in this function
         cout << "Seed: " << Buffer_Seed << " Max:" << Buffer_Max << " min: " << Buffer_Min << endl;
 
         if (Buffer_Act_No == 1)
         {
             // Generation logic for a tree using rand, the gettign its inorder and preorder
+            Act_1_Data *Buffer_Act_1_Data = new Act_1_Data; // making a buffer
+            // Making buffer have data
+            this->act_1_data = Buffer_Act_1_Data; // Puting buffer in main
         }
         else if (Buffer_Act_No == 2)
         {
+            int Buffer_Forced_Skewness = Take_One_Int_Cut(file_content, Buffer_Forced_Skewness, ':', '}', true, true, true, true);
+            Act_2_Data *Buffer_Act_2_Data = new Act_2_Data;              // Make buffer the acts specific data
+            Buffer_Act_2_Data->Forced_Skewness = Buffer_Forced_Skewness; // put data in that buffer
+            this->act_2_data = Buffer_Act_2_Data;                        // Put buffer into the levels act specifc storage
         }
         else if (Buffer_Act_No == 3)
         {
+            Act_3_Data *Buffer_Act_3_Data = new Act_3_Data; // making a buffer
+            // Making buffer have data
+            this->act_3_data = Buffer_Act_3_Data; // Puting buffer in main
         }
         else if (Buffer_Act_No == 4)
         {
+            Act_4_Data *Buffer_Act_4_Data = new Act_4_Data; // making a buffer
+            // Making buffer have data
+            this->act_4_data = Buffer_Act_4_Data; // Puting buffer in main
         }
 
         this->seed = Buffer_Seed; // in seeded mode, irrespective of act these hold, Alhamdulilah
@@ -1164,6 +1265,7 @@ int LevelData::writeData(string file_content)
         return -6;
     }
 
+    this->NodeCapacity = Buffer_NodeCap;
     this->Act = Buffer_Act_No; // Irrespective of mode or act this holds, Alhamdulilah
     this->Description = Buffer_Description;
     this->nodeCount = Buffer_Nodecount;
@@ -1173,7 +1275,40 @@ int LevelData::writeData(string file_content)
 }
 int LevelData::deleteData()
 {
+
+    if (this->act_1_data == nullptr && this->act_2_data == nullptr && this->act_3_data == nullptr && this->act_4_data == nullptr)
+    {
+        cout << "No act data exists" << endl; // The act datas still serve to tell if level has data; and better than seeing if act =0
+        return 0;
+    }
+    else if (this->act_1_data != nullptr)
+    {
+        delete this->act_1_data;
+        this->act_1_data = nullptr;
+        this->Act = 0;
+    }
+    else if (this->act_2_data != nullptr)
+    {
+        delete this->act_2_data;
+        this->act_2_data = nullptr;
+        this->Act = 0;
+    }
+    else if (this->act_3_data != nullptr)
+    {
+        delete this->act_3_data;
+        this->act_3_data = nullptr;
+        this->Act = 0;
+    }
+    else if (this->act_4_data != nullptr)
+    {
+        delete this->act_4_data;
+        this->act_4_data = nullptr;
+        this->Act = 0;
+    }
+    cout << "Deleteion success" << endl;
     return 1; // Standard success
     // Btw i notices if do build play button and then change file
     // Perhaps ignores changes and runs successguly (i returned the return 1's , 1 to see, and ran Alhamdulilah rab al alameen)
 }
+
+#endif

@@ -56,5 +56,5 @@ void setOriginToCenter(sf::Text &Text);
 // Plan, build a list data type, that does auto placement and lets us adjust sizes of each and internal differnece forr ease of ui adjustment inshallah
 
 bool Sprite_has_cursor_on_it(sf::Sprite &Sprite, sf::Vector2f Cursor_Coordiantes);
-
+string Int_To_String(int Num);
 #endif
