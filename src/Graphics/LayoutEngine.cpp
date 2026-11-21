@@ -1,11 +1,10 @@
 #include<iostream>
 #include<string>
-#include "src\Data Structures\BT.cpp"
-#include "src\Data Structures\MaxHeap.cpp"
+#include "../Data Structures/BT.cpp"
+#include "../Data Structures/MaxHeap.cpp"
 using namespace std;
 
-struct Coordinates{
-    int id;
+struct Coordinates:public TreeNode, public MaxHeap{
     float x;
     float y;
     Coordinates(int i){

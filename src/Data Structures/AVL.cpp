@@ -31,10 +31,17 @@ int getHeight(AVLNode* node){
     return node->height;
 }
 
+int getSize(AVLNode* root){
+    if (root==NULL){
+        return 0;
+    }
+    return root->size;
+}
+
 AVLNode* insert(AVLNode* root, int key){//consider: user tree
     if (root==NULL){
         AVLNode* temp=new AVLNode(key);
-        return;
+        return temp;;
     }
     if (key<root->value){
         root->left=insert(root->left, key);
@@ -47,6 +54,7 @@ AVLNode* insert(AVLNode* root, int key){//consider: user tree
     }
 
     root->height=(getHeight(root->left)>getHeight(root->right)?getHeight(root->left):getHeight(root->right))+1;
+    root->size=1+getSize(root->left)+getSize(root->right);
     if (getBalanceFactor(root)>1 && key<root->left->value){
         root=rightRotate(root);
     }
@@ -61,7 +69,7 @@ AVLNode* insert(AVLNode* root, int key){//consider: user tree
         root->right=rightRotate(root->right);
         root=leftRotate(root);
     }
-    return;
+    return root;
 }
 
 AVLNode* rightRotate(AVLNode* y){
@@ -71,6 +79,8 @@ AVLNode* rightRotate(AVLNode* y){
     y->left = b;
     a->height = (getHeight(a->left)>getHeight(a->right)?getHeight(a->left):getHeight(a->right))+1;
     y->height = (getHeight(y->left)>getHeight(y->right)?getHeight(y->left):getHeight(y->right))+1;
+    y->size=1+getSize(y->left)+getSize(y->right);
+    a->size=1+getSize(a->left)+getSize(a->right);
     return a;
 }
 
@@ -79,11 +89,13 @@ AVLNode* leftRotate(AVLNode* x){
 		return NULL;
 	}
     AVLNode *a = x->right;
-    AVLNode *b= x->left;
+    AVLNode *b= a->left;
     a->left = x;
     x->right = b;
     x->height = (getHeight(x->left)>getHeight(x->right)?getHeight(x->left):getHeight(x->right))+1;
     a->height = (getHeight(a->left)>getHeight(a->right)?getHeight(a->left):getHeight(a->right))+1;
+    x->size=1+getSize(x->left)+getSize(x->right);
+    a->size=1+getSize(a->left)+getSize(a->right);
     return a;
 }
 
@@ -94,6 +106,7 @@ AVLNode* rebalance(AVLNode* root){
 	root->left=rebalance(root->left);
 	root->right=rebalance(root->right);
 	root->height=(getHeight(root->left)>getHeight(root->right)?getHeight(root->left):getHeight(root->right))+1;
+    root->size=1+getSize(root->left)+getSize(root->right);
 	
 	while(getBalanceFactor(root)>1||getBalanceFactor(root)<-1){
 		if(getBalanceFactor(root)>1){
@@ -113,8 +126,21 @@ AVLNode* rebalance(AVLNode* root){
     return root;
 }
 
-int kthAVL(AVLNode* root){
-	
+int kthAVL(AVLNode* root, int k){ // changed: added k as a parameter
+    AVLNode* temp=root;
+    while (temp!=NULL){
+        if (k<=getSize(temp->left)){
+            temp=temp->left;
+        }
+        else if (k==getSize(temp->left)+1){
+            return temp->value;
+        }
+        else{
+            k-=getSize(temp->left)-1;
+            temp=temp->right;
+        }
+    }
+    return -1; //the kth node just doesn't exist
 }
 
 int rankAVL(AVLNode* root, int key){
@@ -122,15 +148,11 @@ int rankAVL(AVLNode* root, int key){
     AVLNode* temp=root;
     while (temp!=NULL){
         if (temp->value <= key){
-            int left;
-            if (temp->left!=NULL){
-            	left=temp->left->size;
-			}
-			count+=1+left;
-			temp=temp->right;
+            count+=1+getSize(temp->left); // size fix: this node + everything in its left subtree
+            temp=temp->right;
         } 
-		else {
-			temp=temp->left;
+        else {
+            temp=temp->left;
         }
     }
     return count;

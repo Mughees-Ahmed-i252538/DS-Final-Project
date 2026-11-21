@@ -12,12 +12,12 @@ struct TreeNode{
 	TreeNode(){
 		left=right=parent=NULL;
 		value=0;
-		id=id+1;
+		id++;
 	}
 	TreeNode(int v){
 		left=right=parent=NULL;
 		value=v;
-		id=id+1;
+		id++;
 	}
 };
 int TreeNode::id=0;
