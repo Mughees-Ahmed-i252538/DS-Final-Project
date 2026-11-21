@@ -3,6 +3,10 @@
 // This round will have a geral overview of the level inshallah
 #include "UIManager.h"
 #include "../Game Mechanics/LevelManager.cpp"
+#include "Act_1.cpp"
+#include "Act_2.cpp"
+#include "Act_3.cpp"
+#include "Act_4.cpp"
 
 int Wrap_Around(sf::RenderWindow &window, sf::Text &Text)
 {
@@ -240,15 +244,19 @@ int LevelSc(sf::RenderWindow &window, LevelManager &Level_Manager, int Current_L
 
                         if (Level_Manager.CurrentLevelData.Act == 1)
                         {
+                            Act_1(window, Level_Manager, Current_Level_No);
                         }
                         else if (Level_Manager.CurrentLevelData.Act == 2)
                         {
+                            Act_2(window, Level_Manager, Current_Level_No);
                         }
                         else if (Level_Manager.CurrentLevelData.Act == 3)
                         {
+                            Act_3(window, Level_Manager, Current_Level_No);
                         }
                         else if (Level_Manager.CurrentLevelData.Act == 4)
                         {
+                            Act_3(window, Level_Manager, Current_Level_No);
                         }
 
                         // If left button pressed and cursor coordinates are in space of quit button, return 0
