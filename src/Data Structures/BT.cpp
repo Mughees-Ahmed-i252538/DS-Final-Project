@@ -9,6 +9,20 @@ struct TreeNode
 {
 	static int id;
 	int value;
+<<<<<<< HEAD
+	TreeNode* left;
+	TreeNode* right;
+	TreeNode* parent;
+	TreeNode(){
+		left=right=parent=NULL;
+		value=0;
+		id++;
+	}
+	TreeNode(int v){
+		left=right=parent=NULL;
+		value=v;
+		id++;
+=======
 	TreeNode *left;
 	TreeNode *right;
 	TreeNode *parent;
@@ -23,6 +37,7 @@ struct TreeNode
 		left = right = parent = NULL;
 		value = v;
 		id = id + 1;
+>>>>>>> c03f47a9eaa56d570f16b7f56c4d1741de7c7496
 	}
 };
 int TreeNode::id = 0;
