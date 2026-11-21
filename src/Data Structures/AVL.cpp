@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "BST.cpp"
+#include "BT.cpp"
 #include "src\Data Structures\BST.cpp"
 
 struct AVLNode : public BSTNode
@@ -52,6 +52,7 @@ AVLNode *insert(AVLNode *root, int key)
     {
         AVLNode *temp = new AVLNode(key);
         return temp;
+        ;
     }
     if (key < root->value)
     {
@@ -66,6 +67,7 @@ AVLNode *insert(AVLNode *root, int key)
         cout << "Duplicate!!" << endl;
     }
 
+    //<<<<<<< HEAD
     root->height = (getHeight(root->left) > getHeight(root->right) ? getHeight(root->left) : getHeight(root->right)) + 1;
     root->size = 1 + getSize(root->left) + getSize(root->right);
     if (getBalanceFactor(root) > 1 && key < root->left->value)
@@ -95,7 +97,7 @@ AVLNode *rightRotate(AVLNode *y)
     AVLNode *b = a->right;
     a->right = y;
     y->left = b;
-
+    //<<<<<<< HEAD
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
     y->height = (getHeight(y->left) > getHeight(y->right) ? getHeight(y->left) : getHeight(y->right)) + 1;
     y->size = 1 + getSize(y->left) + getSize(y->right);

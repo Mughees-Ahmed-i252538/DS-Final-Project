@@ -197,7 +197,7 @@ void rangeQuery(BSTNode *root, int lo, int hi)
 	}
 	else
 	{ // here you will need to add the event for skipping the entire left subtree
-		// because they are all less than or equal to lower end of range and so are not in the range
+	  // because they are all less than or equal to lower end of range and so are not in the range
 	}
 
 	if (root->tpayload < hi)
@@ -206,7 +206,7 @@ void rangeQuery(BSTNode *root, int lo, int hi)
 	}
 	else
 	{ // here you will need to add the event for skipping the entire right subtree
-		// because they are all greater than or equal to higher end of range and so are not in the range
+	  // because they are all greater than or equal to higher end of range and so are not in the range
 	}
 }
 
