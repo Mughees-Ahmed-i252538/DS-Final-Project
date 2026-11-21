@@ -6,7 +6,7 @@
 #define CAPACITY 200
 using namespace std;
 
-TreeNode *makeBT(string s) // I think a better idea on this one was t
+TreeNode *makeBT(string s) // I think a better idea on this one was to make a dmaed char array with lebgth = chars in string, for nums capacity = nodecapcity which could have been inputer
 {
 	char chars[CAPACITY];
 	for (int i = 0; i < s.length() && i < CAPACITY; i++)
@@ -49,9 +49,11 @@ TreeNode *makeBT(string s) // I think a better idea on this one was t
 		}
 		else
 		{
-			insert(root, nums[j]);
-		}
-	}
+			insert(root, nums[j]); // issue on this, BT doesnt have rules on where to isnert
+		} // The logic is instead something along these lines
+	} // sees index 0: if not # makes it the root with its value, sees 0 * 2 +1, if that isnt # it inserts its value in left child of index 0 , it repeats for right child , then it calls this same described fucntionality for each of its children
+	// Note while checking if its children are not # first it has to check it the children are within range
+
 	return root;
 }
 
