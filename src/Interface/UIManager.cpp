@@ -199,3 +199,36 @@ bool Sprite_has_cursor_on_it(sf::Sprite &Sprite, sf::Vector2f Cursor_Coordiantes
         return false;
     }
 }
+string Int_To_String(int Num)
+{
+    // We only consider pos values, take absolute
+
+    if (Num < 0)
+    {
+        Num = -Num;
+    }
+
+    if (Num == 0)
+    {
+        return "0"; // Because loop rejects it, Alhamdulilah rab al alameen issue found
+    }
+
+    string Output;
+    while (Num) // as long as num stays non 0
+    {
+        Output += (char)(Num % 10 + '0'); // from the end
+        Num = Num / 10;
+    }
+    // Now the string is flipped number
+    // We need to reverse if
+
+    // cout << "Orignal " << Output << endl;
+    for (int i = 0; i < Output.size() / 2; i++) // Issue found Alhamdulilah, when passes the halfway mark, re reverses the array, must stop at halfway, can skip middle if odd ALhamdulilah rab al alameen
+    {
+        char temp = Output[i];
+        Output[i] = Output[Output.size() - 1 - i]; // size-1 is last location to be stored in
+        Output[Output.size() - 1 - i] = temp;
+    }
+    // cout << "Reversed " << Output << endl;
+    return Output;
+}

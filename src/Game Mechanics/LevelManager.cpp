@@ -1,5 +1,9 @@
 // Bismillah hirahman nirahim
 // bismillah awala hu wa akhira hu
+
+#ifndef LEVELMANAGER
+#define LEVELMANAGER
+
 #include "LevelManager.h"
 
 // I put the levels in folders but their act is still determined by the number written inside them
@@ -332,6 +336,22 @@ int Take_Int_Array_Cut(string &Main, int *&int_output_DMAd_Array_Or_Nullptr, int
     return 0; // Placeholder output, current logic shouldnt trigger it Alhamdulilah rab al alameen
 
     // if only 2 element [1,2]
+}
+
+int Level_NFA_Map::Lock() // Done be a camign and saves as we load the catalog, unless save loaded it unlocks first level and locks the rest
+{
+    this->Locked = true;
+    return 1; // Success
+}
+int Level_NFA_Map::Unlock()
+{
+    this->Locked = false;
+    return 1; // Success
+}
+int Level_NFA_Map::setStars(int Stars)
+{
+    this->Stars = Stars; // issue had forgotten to do return, fixed Alhamdulilah rab al alameen
+    return 1;            // Success
 }
 
 int LevelManager::loadCatalogue() // needs var renaming for ease of understanding inshallah
@@ -967,6 +987,27 @@ int LevelCatalog::deleteCatalog()
     return 1; // Deleted current stored map
 }
 
+int LevelCatalog::Set_Default_CampaignStartCondition()
+{
+    // Unlock first, rest stay locked
+    this->Catalog_Of_Level_NFA_Maps[0].Unlock();
+    this->Catalog_Of_Level_NFA_Maps[0].setStars(0);
+
+    for (int i = 1; i < No_of_Levels; i++)
+    {
+        this->Catalog_Of_Level_NFA_Maps[i].Lock();
+        this->Catalog_Of_Level_NFA_Maps[i].setStars(0);
+    }
+
+    return 1;
+}
+
+int SetCustom_Campaign_StartCondition(bool *Level_Lock_States, string *Level_Filenames, int Level_Starts, int size)
+{
+    // sees if size correct and initializes like so, inshallah will be written once save logic is
+    return 1;
+}
+
 LevelCatalog::~LevelCatalog()
 {
     this->deleteCatalog(); // Simply delete using already made function
@@ -1269,3 +1310,5 @@ int LevelData::deleteData()
     // Btw i notices if do build play button and then change file
     // Perhaps ignores changes and runs successguly (i returned the return 1's , 1 to see, and ran Alhamdulilah rab al alameen)
 }
+
+#endif

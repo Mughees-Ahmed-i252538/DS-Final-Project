@@ -21,7 +21,7 @@ struct Level_NFA_Map // Level Name, File name map
 
     int Lock(); // Done be a camign and saves as we load the catalog, unless save loaded it unlocks first level and locks the rest
     int Unlock();
-    int setStars(); // Depending on saves else all are 0 at start
+    int setStars(int Stars); // Depending on saves else all are 0 at start
 };
 
 struct LevelCatalog
@@ -38,6 +38,8 @@ struct LevelCatalog
     int writeCatalogue(string Json_Levels_Catalog_File);
 
     int deleteCatalog();
+
+    // Locks and starts at start are determined by the two funcs cabout start condition and not by the writeCatalog Alhamdulilah rab al alameen
 
     int Set_Default_CampaignStartCondition(); // set all stars 0, only first level state unlcoked rest locked
 

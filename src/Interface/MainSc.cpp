@@ -6,9 +6,11 @@
 // #include <SFML/Graphics.hpp> done in ui manager.cpp (although oindirectly through a more forward file)
 #include "UIManager.cpp"
 #include "CampaignMapSc.cpp"
+#include "../Game Mechanics/LevelManager.cpp"
 using namespace std;
 
-int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forwarding (tentative exact puroose but kept this way for flexibilluty may not be used in current version)
+// sELF: GETTING issues while sending without refrence, I think copying issue ; logic should have been with refrence
+int MainSc(sf::RenderWindow &window, LevelManager &Level_Manager) // returns outputs for debugging or forwarding (tentative exact puroose but kept this way for flexibilluty may not be used in current version)
 {
     int Window_View_Size_x = window.getView().getSize().x; // these are needed to be able to set sizes of our sprites
     int Window_View_Size_y = window.getView().getSize().y;
@@ -105,9 +107,13 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
             // Keyboard events
             if (sf::Event::KeyPressed *Key = event->getIf<sf::Event::KeyPressed>()) // KEypressed is a datatype
             {                                                                       // We use a * because it is able to be converted to bool
-                                                                                    // The getIf returns nullptr if event isnt KeyPressed, hence we wont run this block
-                                                                                    // More importantly getIf always returns a ptr const t*; t is a template placeholder, we made template keypressed
-                                                                                    // If event not of keypressed type it returns nullptr
+                // The getIf returns nullptr if event isnt KeyPressed, hence we wont run this block
+                // More importantly getIf always returns a ptr const t*; t is a template placeholder, we made template keypressed
+                // If event not of keypressed type it returns nullptr
+                if (Key->code == sf::Keyboard::Key::Escape)
+                {
+                    return 0;
+                }
 
                 // FOr fine tuning
                 /*
@@ -146,7 +152,8 @@ int MainSc(sf::RenderWindow &window) // returns outputs for debugging or forward
                     }
                     else if (Sprite_has_cursor_on_it(Campaign_Button_ST.Sprite, cursor_cordinates))
                     {
-                                        }
+                        CampaignMapSc(window, Level_Manager);
+                    }
                 }
             }
         }
