@@ -2,6 +2,7 @@
 #include<string>
 #include "BT.cpp"
 #include "BST.cpp"
+#include "AVL.cpp"
 using namespace std;
 
 TreeNode* makeBT(string s){
@@ -14,6 +15,10 @@ TreeNode* makeBT(string s){
 	int count=0;
 	int i=0;
 	while(i<s.length() && count<200){
+        if (chars[i]=='#'){
+            nums[count]=-1;
+            continue;
+        }
 		if(chars[i]>='0' && chars[i]<='9'){
 			int n=0;
 			while(i<s.length() && chars[i]>='0' && chars[i]<='9'){
@@ -51,6 +56,10 @@ BSTNode* makeBST(string s){
 	int cur=0;
 	bool reading=false;
 	for(int i=0;i<s.length();i++){
+        if (chars[i]=='#'){
+            nums[count]=-1;
+            continue;
+        }
 		if(chars[i]>='0' && chars[i]<='9'){
 			cur=cur*10+(chars[i]-'0');
 			reading=true;
@@ -62,6 +71,7 @@ BSTNode* makeBST(string s){
 			reading=false;
 		}
 	}
+
 	if(reading){
 		nums[count]=cur;
 		count++;
