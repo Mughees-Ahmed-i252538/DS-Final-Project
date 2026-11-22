@@ -7,9 +7,11 @@
 #include <iostream>
 using namespace std; // we need this to do string name, elsewiase it wotnt recognize string
 
+struct Sprite_Double_Array_Act_1_1;
+
 struct VISIT_Data // What each event data contains is still subject to change as the acts as made
 {                 // For now based on datatype inference based on details given
-    int nodeId = 0;
+    Sprite_Double_Array_Act_1_1 *node = nullptr;
 };
 struct COMPARE_Data
 {
@@ -136,7 +138,7 @@ struct EventModel
     ~EventModel(); // Sees what the data is and calls the data destructor for each of those data after transforming the ptr back to them
     // Not known whether repeats of same event for different strutts like both bst and bt may visit
     // If so i think i will make a differnet copy for them and make unique namess to ease undo inshallah
-    void VISIT(int nodeId);
+    void VISIT(Sprite_Double_Array_Act_1_1 *node);
     void COMPARE(int nodeId, int key, char result);
     void INSERT(int nodeId, int key, int side);
     void UNLINK(int nodeId, int key, int side);

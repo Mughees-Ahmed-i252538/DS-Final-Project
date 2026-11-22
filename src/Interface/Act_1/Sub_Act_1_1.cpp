@@ -6,6 +6,7 @@
 #include "../UIManager.h"
 #include "../../Graphics/LayoutEngine_M.cpp"
 #include "../../Game Mechanics/AlarmMeter.cpp"
+#include "../../Event Log/EventLog.cpp"
 struct BT_Module_1 // cuz the bt isnt a struct so it cant auto delete, we need it to auto delete
 {
     TreeNode *root = nullptr;
@@ -329,6 +330,8 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
     Score_Text.scale(sf::Vector2f(2, 2));
     Score_Text.setPosition(sf::Vector2f(window.getView().getSize().x - 380, window.getView().getSize().y - 250));
 
+    EventModel Event_Log;
+
     while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
     {
         while (std::optional event = window.pollEvent()) // This is the sfml 3 syntax, the 2 syntax was make an sf::Event event and do while(window.pollevent(event)), which is no longer usable as eents can no longer be empty (they did it to upgrade from c to c++ usage , it puts safety checks...)
@@ -368,6 +371,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                                 // cout << "t0" << endl;
                                 if (NodeSprite_Array.NodeSTC_Array[i].Clicked == false)
                                 {
+
                                     Alarm.addStep();
                                     Display_Result = false;
                                     NodeSprite_Array.NodeSTC_Array[i].Click();

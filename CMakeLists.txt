@@ -28,7 +28,7 @@ add_executable(Program src/main.cpp)#Program is the name of the exe file to buil
 #Each Program is an exe file, a project can have multiple exe files
 #Program provides a target to include source files in
 #It also serves as a target to link libraries to
-target_link_libraries(Program PRIVATE SFML::Graphics)
+target_link_libraries(Program PRIVATE SFML::Graphics SFML::Audio)#linked to audio
 #sfml graphics is a sub library in sfml that handles windows and display
 #This links this library to our target "Program" (which serves as an exe because linker literally copy pastes all library code inside (so work as code together to be exe)
 

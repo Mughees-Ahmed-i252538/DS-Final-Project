@@ -8,6 +8,7 @@
 #include <iostream>
 // #include <SFML/Graphics.hpp>//included via main sc file
 #include "../Interface/MainSc.cpp"
+#include <SFML/Audio.hpp>
 #include "LevelManager.cpp" //only included here to testm this is instead included inside campaign map ui
 // Actually Object is possessed by Game()
 // Which sends it to mainSc which forwards it to CampaignSc
@@ -31,6 +32,15 @@ void Game()
     sf::View Wanted_View(sf::FloatRect(sf::Vector2f(0, 0), sf::Vector2f(WANTED_VIEW_X, WANTED_VIEW_Y)));
 
     sf::FloatRect letterBox_Viewport = letterBox_Viewport_Calculator(Computer_View, Wanted_View);
+
+    sf::Music Music;
+    if (!Music.openFromFile("../src/Assets/sounds/Music.mp3"))
+    {
+        cout << "music didnt open" << endl;
+    } //"C:\Users\HP\OneDrive\Desktop\DS Project\DS-Final-Project\src\Assets\sounds\Music.mp3"
+
+    Music.setLooping(true);
+    Music.play();
 
     // Now view is the camera pointed in the game world
     // View port is what part of screen it appears on

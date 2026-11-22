@@ -107,11 +107,11 @@ EventModel::~EventModel()
     }
 }
 
-void EventModel::VISIT(int nodeId)
+void EventModel::VISIT(Sprite_Double_Array_Act_1_1 *node)
 {
 
     VISIT_Data *data = new VISIT_Data;
-    data->nodeId = nodeId;
+    data->node = node;
     string name = "VISIT";
     AddEvent(name, (void *)data);
 }
