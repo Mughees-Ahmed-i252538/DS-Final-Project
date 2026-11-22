@@ -7,6 +7,7 @@
 #include "UIManager.cpp"
 #include "CampaignMapSc.cpp"
 #include "../Game Mechanics/LevelManager.cpp"
+#include "../Game Mechanics/LeaderBoard.cpp"
 using namespace std;
 
 // sELF: GETTING issues while sending without refrence, I think copying issue ; logic should have been with refrence
@@ -153,6 +154,10 @@ int MainSc(sf::RenderWindow &window, LevelManager &Level_Manager) // returns out
                     else if (Sprite_has_cursor_on_it(Campaign_Button_ST.Sprite, cursor_cordinates))
                     {
                         CampaignMapSc(window, Level_Manager);
+                    }
+                    else if (Sprite_has_cursor_on_it(Leaderboard_Button_ST.Sprite, cursor_cordinates))
+                    {
+                        makeld();
                     }
                 }
             }
