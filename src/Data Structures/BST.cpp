@@ -1,3 +1,6 @@
+#ifndef BST___
+#define BST___
+
 #include <iostream>
 #include <string>
 #include "BT.cpp"
@@ -31,10 +34,10 @@ struct BSTNode : public TreeNode
 BSTNode *insertNode(BSTNode *root, int val)
 {
 	if (root == NULL)
-    {
-		BSTNode* roottemp=new BSTNode(val);
-        return roottemp;
-    }
+	{
+		BSTNode *roottemp = new BSTNode(val);
+		return roottemp;
+	}
 	else
 	{
 
@@ -277,3 +280,5 @@ BSTNode *lcaBST(BSTNode *root, BSTNode *a, BSTNode *b)
 	} while (temp != NULL);
 	return NULL;
 }
+
+#endif

@@ -406,4 +406,49 @@ TreeNode *DeleteTree(TreeNode *&root)
 	delete root;	// cuz not stored anywhere we dont have to rerutne nullptr
 	return nullptr; // But just in case we use it that way inshallah
 }
+
+int Put_BT_Nodes_From_Tree_To_Array(TreeNode *root, int NodeCap, TreeNode **&Array_Form, int Current_Index)
+{
+	// Currently cosndiering that all nodes should fit inside the array inshallah
+	// But just in cases checks may be put inshallah
+
+	if (Current_Index >= NodeCap) // doesnt let go over limit Alhamdulilah rab al alameen
+	{
+		return 0;
+	}
+
+	if (root == nullptr)
+	{
+		Array_Form[Current_Index] = root; // put nullptr in the place
+		return 0;
+	}
+
+	int Left_Child_Index = Current_Index * 2 + 1;
+	int Right_Child_Index = Current_Index * 2 + 2;
+
+	// Put Current in the current index, call the same fucnction for each of its children
+
+	Array_Form[Current_Index] = root;
+
+	Put_BT_Nodes_From_Tree_To_Array(root->left, NodeCap, Array_Form, Left_Child_Index);
+	Put_BT_Nodes_From_Tree_To_Array(root->right, NodeCap, Array_Form, Right_Child_Index);
+
+	return 1; // Success
+}
+
+int Tree_In_Array_Double_Ptr_Form(TreeNode *root, int NodeCap, TreeNode **&Array_Form) // array form initialy nullptr
+{
+	// 0 is failure
+	Array_Form = new TreeNode *[NodeCap]; // this array holds ptr to tree nodes in order
+
+	for (int i = 0; i < NodeCap; i++)
+	{
+		Array_Form[i] = nullptr;
+	}
+
+	Put_BT_Nodes_From_Tree_To_Array(root, NodeCap, Array_Form, 0);
+
+	return 1; // Success
+}
+
 #endif
