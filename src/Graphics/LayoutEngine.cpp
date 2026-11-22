@@ -1,26 +1,14 @@
-<<<<<<< HEAD
 #include<iostream>
 #include<string>
 #include "../Data Structures/BT.cpp"
 #include "../Data Structures/MaxHeap.cpp"
+#define NO_OF_NODE_FOR_LAYOUT_COORDINATES 200
 using namespace std;
 
 struct Coordinates:public TreeNode, public MaxHeap{
-=======
-#include <iostream>
-#include <string>
-#define NO_OF_NODE_FOR_LAYOUT_COORDINATES 200
-#include "..\Data Structures\BT.cpp"
-#include "..\Data Structures\MaxHeap.cpp"
-using namespace std;
-
-struct Coordinates
-{
-    int id;
->>>>>>> c03f47a9eaa56d570f16b7f56c4d1741de7c7496
     float x;
     float y;
-    Coordinates(int i)
+    Coordinates(int i, int NODECAP):MaxHeap(NODECAP)
     {
         id = i;
         x = 0;
