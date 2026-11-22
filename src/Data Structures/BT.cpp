@@ -1,4 +1,6 @@
 
+#ifndef BT
+#define BT
 #include <iostream>
 #include <string>
 using namespace std;

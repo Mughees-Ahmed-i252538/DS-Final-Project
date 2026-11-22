@@ -1,3 +1,6 @@
+#ifndef FUNCTIONS
+#define FUNCTIONS
+
 #include <iostream>
 #include <string>
 #include "BT.cpp"
@@ -257,3 +260,5 @@ MaxHeap *makeMH(string s, int CAPACITY, int *&nums)
 	h->buildMaxHeap(nums, count);
 	return h;
 }
+
+#endif

@@ -1,10 +1,11 @@
+#ifndef AVL
+#define AVL
 #include <iostream>
 #include <string>
 #include "BT.cpp"
 #include "BST.cpp" //fixed the path
 
-
-int rotationCount=0;
+int rotationCount = 0;
 struct AVLNode : public BSTNode
 {
     int height;
@@ -26,13 +27,16 @@ struct AVLNode : public BSTNode
 
 int getBalanceFactor(AVLNode *root)
 {
-    if (root==NULL){
+    if (root == NULL)
+    {
         return 0;
     }
-    if (!root->left){
-        return (0-root->right->height);
+    if (!root->left)
+    {
+        return (0 - root->right->height);
     }
-    if (!root->right){
+    if (!root->right)
+    {
         return root->left->height;
     }
     return (root->left->height - root->right->height);
@@ -60,7 +64,7 @@ AVLNode *rightRotate(AVLNode *y);
 AVLNode *leftRotate(AVLNode *y);
 
 AVLNode *insert(AVLNode *root, int key)
-{ 
+{
     if (root == NULL)
     {
         AVLNode *temp = new AVLNode(key);
@@ -70,12 +74,12 @@ AVLNode *insert(AVLNode *root, int key)
     if (key < root->value)
     {
         root->left = insert(root->left, key);
-        root->left->parent=root;
+        root->left->parent = root;
     }
     else if (key > root->value)
     {
         root->right = insert(root->right, key);
-        root->right->parent=root;
+        root->right->parent = root;
     }
     else
     {
@@ -111,12 +115,13 @@ AVLNode *rightRotate(AVLNode *y)
     AVLNode *a = y->left;
     AVLNode *b = a->right;
     a->right = y;
-    a->right->parent=a;
+    a->right->parent = a;
     y->left = b;
     a->parent = y->parent;
-    y->parent=a;
-    if (b!=NULL){
-    y->left->parent=y;
+    y->parent = a;
+    if (b != NULL)
+    {
+        y->left->parent = y;
     }
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
     y->height = (getHeight(y->left) > getHeight(y->right) ? getHeight(y->left) : getHeight(y->right)) + 1;
@@ -136,12 +141,13 @@ AVLNode *leftRotate(AVLNode *x)
     AVLNode *a = x->right;
     AVLNode *b = a->left;
     a->left = x;
-    a->left->parent=a;
+    a->left->parent = a;
     x->right = b;
     a->parent = x->parent;
     x->parent = a;
-    if (b != NULL) 
-    {b->parent = x;
+    if (b != NULL)
+    {
+        b->parent = x;
     }
     x->height = (getHeight(x->left) > getHeight(x->right) ? getHeight(x->left) : getHeight(x->right)) + 1;
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
@@ -186,9 +192,8 @@ AVLNode *rebalance(AVLNode *root)
     return root;
 }
 
-
 int kthAVL(AVLNode *root, int k)
-{ 
+{
     AVLNode *temp = root;
     while (temp != NULL)
     {
@@ -202,7 +207,7 @@ int kthAVL(AVLNode *root, int k)
         }
         else
         {
-            k = k-getSize(temp->left) - 1;
+            k = k - getSize(temp->left) - 1;
             temp = temp->right;
         }
     }
@@ -247,3 +252,5 @@ bool isBalanced(AVLNode *root)
 
     return isBalanced(root->left) && isBalanced(root->right);
 }
+
+#endif

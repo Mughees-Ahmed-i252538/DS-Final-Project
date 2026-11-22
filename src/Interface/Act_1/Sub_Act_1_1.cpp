@@ -5,6 +5,7 @@
 // #include "../Act_1.cpp"//must op out otherwise circular dependancy
 #include "../UIManager.h"
 #include "../../Graphics/LayoutEngine_M.cpp"
+#include "../../Game Mechanics/AlarmMeter.cpp"
 struct BT_Module_1 // cuz the bt isnt a struct so it cant auto delete, we need it to auto delete
 {
     TreeNode *root = nullptr;
@@ -205,7 +206,7 @@ struct Int_Array_2
 
             if (top != size - 1)
             {
-                cout << "Stroring " << Array_value << " in index: " << top + 1 << endl;
+                // cout << "Stroring " << Value << " in index: " << top + 1 << endl;
 
                 Array_value[++top] = Value;
                 Array_id[top] = id; // i see they were desynced ALhamdulilah
@@ -300,8 +301,8 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
     Order_Text.setString("Traverse in PreOrder");
     Order_Text.setFillColor(sf::Color::Black);
     // Order_Text.setOrigin(sf::Vector2f(Order_Text.getLocalBounds().size.x / 2 + Order_Text.getLocalBounds().position.x, Order_Text.getLocalBounds().size.y / 2 + Order_Text.getLocalBounds().position.y));
-    Order_Text.scale(sf::Vector2f(2.5, 2.5));
-    Order_Text.setPosition(sf::Vector2f(80, 80));
+    Order_Text.scale(sf::Vector2f(2, 2));
+    Order_Text.setPosition(sf::Vector2f(100, 100));
 
     sf::Text Result_Text(Act_1_1_Font);
     Result_Text.setString("Empty");
@@ -311,6 +312,22 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
     Result_Text.setPosition(sf::Vector2f(80, 700));
 
     bool Display_Result = false;
+
+    int optimal_steps = Level_Manager.CurrentLevelData.nodeCount * 3;
+    AlarmMeter Alarm(optimal_steps);
+    sf::Text Alarm_Text(Act_1_1_Font);
+    Alarm_Text.setString("Empty");
+    Alarm_Text.setFillColor(sf::Color::Red);
+    // Result_Text.setOrigin(sf::Vector2f(Result_Text.getLocalBounds().size.x / 2 + Result_Text.getLocalBounds().position.x, Result_Text.getLocalBounds().size.y / 2 + Result_Text.getLocalBounds().position.y));
+    Alarm_Text.scale(sf::Vector2f(2, 2));
+    Alarm_Text.setPosition(sf::Vector2f(window.getView().getSize().x - 380, window.getView().getSize().y - 190));
+
+    sf::Text Score_Text(Act_1_1_Font);
+    Score_Text.setString("Empty");
+    Score_Text.setFillColor(sf::Color::Blue);
+    // Result_Text.setOrigin(sf::Vector2f(Result_Text.getLocalBounds().size.x / 2 + Result_Text.getLocalBounds().position.x, Result_Text.getLocalBounds().size.y / 2 + Result_Text.getLocalBounds().position.y));
+    Score_Text.scale(sf::Vector2f(2, 2));
+    Score_Text.setPosition(sf::Vector2f(window.getView().getSize().x - 380, window.getView().getSize().y - 250));
 
     while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
     {
@@ -351,15 +368,16 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                                 // cout << "t0" << endl;
                                 if (NodeSprite_Array.NodeSTC_Array[i].Clicked == false)
                                 {
+                                    Alarm.addStep();
                                     Display_Result = false;
                                     NodeSprite_Array.NodeSTC_Array[i].Click();
                                     // cout << "t1" << endl;
                                     NodeSprite_Array.Clicked_count++;
                                     // cout << "t2" << endl;
-                                    cout << "Adding in user Traversal_+)@$I_)I_I: " << NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->value << " " << NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->id << endl;
+                                    // cout << "Adding in user Traversal_+)@$I_)I_I: " << NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->value << " " << NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->id << endl;
                                     User_Traversal.Add_Value(NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->value, NodeSprite_Array.NodeSTC_Array[i].Node_uo_ptr->id);
-                                    cout << "Stored: " << User_Traversal.Array_value[User_Traversal.top] << " " << User_Traversal.Array_id[User_Traversal.top] << endl;
-                                    // cout << "t3" << endl;
+                                    // cout << "Stored: " << User_Traversal.Array_value[User_Traversal.top] << " " << User_Traversal.Array_id[User_Traversal.top] << endl;
+                                    //  cout << "t3" << endl;
                                 }
                             }
                         }
@@ -379,12 +397,15 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 bool equal = true;
                 for (int i = 0; i < Level_Manager.CurrentLevelData.nodeCount; i++)
                 {
-                    cout << User_Traversal.Array_value[i] << " " << Preoder_Traversal.Array_value[i] << endl;
+                    cout << "User Traversal: " << User_Traversal.Array_value[i] << " Preorder Traversal:" << Preoder_Traversal.Array_value[i] << endl;
+                    cout << "User Traversal id: " << User_Traversal.Array_id[i] << " Preorder Traversal id:" << Preoder_Traversal.Array_id[i] << endl;
 
-                    if (User_Traversal.Array_id[i] != Preoder_Traversal.Array_id[i])
+                    if (User_Traversal.Array_value[i] != Preoder_Traversal.Array_value[i])
                     {
-                        equal = false;
+                        equal = false; // oh issue may be
                     }
+                    cout << "node count: " << Level_Manager.CurrentLevelData.nodeCount << endl;
+                    cout << "Equal Sattsu ::::::::::::::::;;;" << equal << endl;
                 }
                 if (equal == true)
                 {
@@ -395,10 +416,6 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                     Result_Text.setString("Preorder Failure");
                 }
 
-                for (int i = 0; i < Level_Manager.CurrentLevelData.nodeCount; i++)
-                {
-                }
-
                 Order_Text.setString("Inorder Traversal");
             }
             else if (Which_Traversal_Checking == 2)
@@ -406,7 +423,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 bool equal = true;
                 for (int i = 0; i < Level_Manager.CurrentLevelData.nodeCount; i++)
                 {
-                    if (User_Traversal.Array_id[i] != Inorder_Traversal.Array_id[i])
+                    if (User_Traversal.Array_value[i] != Inorder_Traversal.Array_value[i])
                     {
                         equal = false;
                     }
@@ -428,7 +445,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 for (int i = 0; i < Level_Manager.CurrentLevelData.nodeCount; i++)
                 {
 
-                    if (User_Traversal.Array_id[i] != Postorder_Traversal.Array_id[i])
+                    if (User_Traversal.Array_value[i] != Postorder_Traversal.Array_value[i])
                     {
                         equal = false;
                     }
@@ -441,17 +458,17 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 {
                     Result_Text.setString("Post Failure");
                 }
-
-                Result_Text.setString("The End");
             }
             User_Traversal.top = -1;
             Display_Result = true;
             Which_Traversal_Checking++;
             if (Which_Traversal_Checking == 4)
             {
-                Order_Text.setString("End");
-                Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].setStars(3);
-                if (Current_Level < Level_Manager.Catalog.No_of_Levels)
+                Order_Text.setString("The End");
+                Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].score = Alarm.score();
+                Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].Stars = Alarm.stars();
+
+                if (Current_Level < Level_Manager.Catalog.No_of_Levels && Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].Stars != 0)
                 {
 
                     Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level + 1].Unlock();
@@ -474,9 +491,19 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
             window.draw(Result_Text);
         }
 
+        string Alarm_String = "Alarm: ";
+
+        Alarm_String += Int_To_String(Alarm.steps);
+        Alarm_String += '/';
+        Alarm_String += Int_To_String(Alarm.capacity);
+
+        Alarm_Text.setString(Alarm_String);
+
+        string Score_String = "Score: ";
+        Score_String += Int_To_String(Alarm.score());
         // NodeSprite_Array.Draw_On(window);
         // window.draw(*NodeSprite_Array.NodeSTC_Array[0].Sprite_ptr);
-
+        Score_Text.setString(Score_String);
         /*
         if (NodeSprite_Array.NodeSTC_Array[0].Sprite_ptr == nullptr)
         {
@@ -491,7 +518,8 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
 
         NodeSprite_Array.Draw_On(window);
         window.draw(Order_Text);
-        // window.draw(*NodeSprite_Array.NodeSTC_Array[1].Sprite_ptr);
+        window.draw(Alarm_Text); // window.draw(*NodeSprite_Array.NodeSTC_Array[1].Sprite_ptr);
+        window.draw(Score_Text);
         // window.draw(*NodeSprite_Array.NodeSTC_Array[2].Sprite_ptr);
 
         // for (int i = 0; i < 5; i++)

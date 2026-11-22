@@ -1,3 +1,5 @@
+#ifndef MAXHEAP
+#define MAXHEAP
 #include <iostream>
 #include <string>
 using namespace std;
@@ -6,63 +8,66 @@ struct MaxHeap
 {
 	int cap;
 	int top;
-	int* array;
+	int *array;
 	int filled;
 
-	MaxHeap(){
-		
+	MaxHeap()
+	{
 	}
 
-	MaxHeap(int c){
-		cap=c;
-		top=-1;
-		array=new int[c];
-		filled=0;
+	MaxHeap(int c)
+	{
+		cap = c;
+		top = -1;
+		array = new int[c];
+		filled = 0;
 	}
 	~MaxHeap()
 	{
-    delete[] array;
+		delete[] array;
 	}
 
-	void buildMaxHeap(int arr[], int s){
-		if (s>cap){
-			s=cap;
+	void buildMaxHeap(int arr[], int s)
+	{
+		if (s > cap)
+		{
+			s = cap;
 		}
-    for (int i=0; i<s; i++)
-    {
-        array[i] = arr[i];
-    }
-    top = s-1;
-    filled = s;
-    for (int i = s/2-1;i>= 0; i--)
-    {
-        Heapify_down(i);
-    }
+		for (int i = 0; i < s; i++)
+		{
+			array[i] = arr[i];
+		}
+		top = s - 1;
+		filled = s;
+		for (int i = s / 2 - 1; i >= 0; i--)
+		{
+			Heapify_down(i);
+		}
 	}
 
 	void heapSort()
 	{
-		 int n=top+1;
-    	for (int i=n/2-1;i>=0;i--)
-    	{
-        Heapify_down(i);
-    }
-    while (top>0)
-    {
-        int temp = array[0];
-        array[0] = array[top];
-        array[top] = temp;
-        top--;
-		filled--;
-        Heapify_down(0);
-    }
-    top = n-1;
-    filled=n;
+		int n = top + 1;
+		for (int i = n / 2 - 1; i >= 0; i--)
+		{
+			Heapify_down(i);
+		}
+		while (top > 0)
+		{
+			int temp = array[0];
+			array[0] = array[top];
+			array[top] = temp;
+			top--;
+			filled--;
+			Heapify_down(0);
+		}
+		top = n - 1;
+		filled = n;
 	}
 
 	void insert(int priority)
 	{
-		if (top>=cap-1)
+		if (top >= cap - 1)
 		{
 			cout << "Heap Full" << endl;
 			cout << "No of elements: " << top + 1 << endl;
@@ -207,3 +212,5 @@ struct MaxHeap
 		}
 	}
 };
+
+#endif

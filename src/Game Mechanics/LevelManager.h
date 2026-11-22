@@ -19,6 +19,7 @@ struct Level_NFA_Map // Level Name, File name map
 
     bool Locked = false; // a fucntion locks this depending on catalog previous level
     int Stars = 0;       // Used for seeing score
+    int score = 0;
 
     int Lock(); // Done be a camign and saves as we load the catalog, unless save loaded it unlocks first level and locks the rest
     int Unlock();
