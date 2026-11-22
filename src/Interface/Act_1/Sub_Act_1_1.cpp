@@ -7,6 +7,7 @@
 #include "../../Graphics/LayoutEngine_M.cpp"
 #include "../../Game Mechanics/AlarmMeter.cpp"
 #include "../../Event Log/EventLog.cpp"
+#include "../../Game Mechanics/LeaderBoard.cpp"
 struct BT_Module_1 // cuz the bt isnt a struct so it cant auto delete, we need it to auto delete
 {
     TreeNode *root = nullptr;
@@ -351,6 +352,12 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 {
                     return 0;
                 }
+                if (Key->code == sf::Keyboard::Key::U)
+                {
+                    ((VISIT_Data *)Event_Log.EventLog[Event_Log.top].Data)->node->Unlick();
+                    NodeSprite_Array.Clicked_count--;
+                    Event_Log.top--;
+                }
             }
             else if (sf::Event::MouseButtonPressed *click = event->getIf<sf::Event::MouseButtonPressed>())
             {                                                                              // If mouse button pressed this block runs
@@ -472,6 +479,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                 Order_Text.setString("The End");
                 Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].score = Alarm.score();
                 Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].Stars = Alarm.stars();
+                notescores(Alarm.score());
 
                 if (Current_Level < Level_Manager.Catalog.No_of_Levels && Level_Manager.Catalog.Catalog_Of_Level_NFA_Maps[Current_Level].Stars != 0)
                 {
@@ -482,13 +490,13 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
         }
 
         // Now for real time keyboard input
-
+        /*
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U) && Event_Log.top != -1) // This bypasses the poll queue to directly reaad state of keyboard
         {
             ((VISIT_Data *)Event_Log.EventLog[Event_Log.top].Data)->node->Unlick();
             NodeSprite_Array.Clicked_count--;
             Event_Log.top--;
-        }
+        }*/
 
         // cout << "Crash test 1" << endl;
 
