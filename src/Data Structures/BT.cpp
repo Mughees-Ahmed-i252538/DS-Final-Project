@@ -1,5 +1,3 @@
-#ifndef BT
-#define BT
 
 #include <iostream>
 #include <string>
@@ -450,5 +448,3 @@ int Tree_In_Array_Double_Ptr_Form(TreeNode *root, int NodeCap, TreeNode **&Array
 
 	return 1; // Success
 }
-
-#endif

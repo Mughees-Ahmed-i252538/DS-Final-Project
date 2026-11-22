@@ -29,6 +29,12 @@ int getBalanceFactor(AVLNode *root)
     if (root==NULL){
         return 0;
     }
+    if (!root->left){
+        return (0-root->right->height);
+    }
+    if (!root->right){
+        return root->left->height;
+    }
     return (root->left->height - root->right->height);
 }
 
@@ -196,7 +202,7 @@ int kthAVL(AVLNode *root, int k)
         }
         else
         {
-            k -= getSize(temp->left) - 1;
+            k = k-getSize(temp->left) - 1;
             temp = temp->right;
         }
     }
