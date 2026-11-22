@@ -170,7 +170,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
 
     cout << "Node Capacity: " << Bin_T.NodeCapacity << endl;
 
-    for (int i = 0; i << Bin_T.NodeCapacity; i++)
+    for (int i = 0; i < Bin_T.NodeCapacity; i++)
     {
         cout << Bin_T.Tree_In_Array_Form[i] << " ";
     }
