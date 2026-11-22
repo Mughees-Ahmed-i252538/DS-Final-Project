@@ -107,7 +107,7 @@ EventModel::~EventModel()
     }
 }
 
-void EventModel::VISIT(Sprite_Double_Array_Act_1_1 *node)
+void EventModel::VISIT(BT_Node_Sprite_Text_Combo_1 *node)
 {
 
     VISIT_Data *data = new VISIT_Data;

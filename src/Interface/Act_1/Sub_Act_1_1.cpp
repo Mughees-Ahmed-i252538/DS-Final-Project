@@ -372,6 +372,7 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
                                 if (NodeSprite_Array.NodeSTC_Array[i].Clicked == false)
                                 {
 
+                                    Event_Log.VISIT(&NodeSprite_Array.NodeSTC_Array[i]);
                                     Alarm.addStep();
                                     Display_Result = false;
                                     NodeSprite_Array.NodeSTC_Array[i].Click();
@@ -481,11 +482,13 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
         }
 
         // Now for real time keyboard input
-        /*
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) // This bypasses the poll queue to directly reaad state of keyboard
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U) && Event_Log.top != -1) // This bypasses the poll queue to directly reaad state of keyboard
         {
-            NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->move(sf::Vector2f(1, 0));
-        }*/
+            ((VISIT_Data *)Event_Log.EventLog[Event_Log.top].Data)->node->Unlick();
+            NodeSprite_Array.Clicked_count--;
+            Event_Log.top--;
+        }
 
         // cout << "Crash test 1" << endl;
 
