@@ -5,6 +5,7 @@
 #define LEVELMANAGER
 
 #include "LevelManager.h"
+#include "../Data Structures/functions1.cpp"
 
 // I put the levels in folders but their act is still determined by the number written inside them
 
@@ -345,7 +346,12 @@ int Level_NFA_Map::Lock() // Done be a camign and saves as we load the catalog, 
 }
 int Level_NFA_Map::Unlock()
 {
+    if (this->Locked)
+    {
+        Stars = 0;
+    }
     this->Locked = false;
+
     return 1; // Success
 }
 int Level_NFA_Map::setStars(int Stars)
@@ -1229,7 +1235,8 @@ int LevelData::writeData(string file_content, int Act_No_From_Catalog) // To cha
         int Buffer_Min = Take_One_Int_Cut(file_content, Buffer_Min, ':', ',', true, true, true, true); // I am thinking of add a bool for dont remove orignal start and beforewards(maynot not inshallah, Allahh swt knows best)
         // NOte we didnt remove ending } in this function
         cout << "Seed: " << Buffer_Seed << " Max:" << Buffer_Max << " min: " << Buffer_Min << endl;
-
+        string TreeBuffer;
+        randomizer(TreeBuffer, Buffer_NodeCap, Buffer_Seed);
         if (Buffer_Act_No == 1)
         {
             // Generation logic for a tree using rand, the gettign its inorder and preorder
@@ -1257,6 +1264,7 @@ int LevelData::writeData(string file_content, int Act_No_From_Catalog) // To cha
             this->act_4_data = Buffer_Act_4_Data; // Puting buffer in main
         }
 
+        this->Tree = TreeBuffer;
         this->seed = Buffer_Seed; // in seeded mode, irrespective of act these hold, Alhamdulilah
         this->Max = Buffer_Max;
         this->Min = Buffer_Min;

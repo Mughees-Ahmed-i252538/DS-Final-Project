@@ -1,4 +1,6 @@
 
+#ifndef BT
+#define BT
 #include <iostream>
 #include <string>
 using namespace std;
@@ -449,3 +451,71 @@ int Tree_In_Array_Double_Ptr_Form(TreeNode *root, int NodeCap, TreeNode **&Array
 
 	return 1; // Success
 }
+
+int Give_Preorder_Traversal_Int_Array_id_val(int *&Array_id, int *&Array_value, int NodeCap, TreeNode *root, int &Current_Index)
+{
+	if (root == nullptr)
+	{
+		return 0;
+	}
+	if (Current_Index == 0)
+	{
+		Array_id = new int[NodeCap];
+		Array_value = new int[NodeCap];
+	}
+
+	Array_id[Current_Index] = root->id;
+	Array_value[Current_Index] = root->value;
+
+	Current_Index++;
+
+	Give_Preorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->left, Current_Index);
+	Give_Preorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->right, Current_Index);
+	return 1;
+}
+
+int Give_Inorder_Traversal_Int_Array_id_val(int *&Array_id, int *&Array_value, int NodeCap, TreeNode *root, int &Current_Index)
+{
+	if (root == nullptr)
+	{
+		return 0;
+	}
+	if (Current_Index == 0)
+	{
+		Array_id = new int[NodeCap];
+		Array_value = new int[NodeCap];
+	}
+
+	Give_Inorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->left, Current_Index);
+
+	Array_id[Current_Index] = root->id;
+	Array_value[Current_Index] = root->value;
+
+	Current_Index++;
+
+	Give_Inorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->right, Current_Index);
+	return 1;
+}
+int Give_Postorder_Traversal_Int_Array_id_val(int *&Array_id, int *&Array_value, int NodeCap, TreeNode *root, int &Current_Index)
+{
+	if (root == nullptr)
+	{
+		return 0;
+	}
+	if (Current_Index == 0)
+	{
+		Array_id = new int[NodeCap];
+		Array_value = new int[NodeCap];
+	}
+
+	Give_Postorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->left, Current_Index);
+
+	Give_Postorder_Traversal_Int_Array_id_val(Array_id, Array_value, NodeCap, root->right, Current_Index);
+
+	Array_id[Current_Index] = root->id;
+	Array_value[Current_Index] = root->value;
+
+	Current_Index++;
+	return 1;
+}
+#endif

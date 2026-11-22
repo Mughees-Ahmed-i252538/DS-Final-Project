@@ -74,15 +74,15 @@ int Find_Sprite_Loc_And_Size(bool is_root, sf::Vector2f Parent_Loc, sf::RenderWi
         {
             Current_Loc.x = distance_bw_nodes_x + Parent_Loc.x; // Considering this would fit non origin genometric centered ?
             // Allah swt knows best
-            Current_Loc.y = -distance_bw_nodes_y + Parent_Loc.y + (distance_bw_nodes_y * (0.99) * ((float)Level_of_Current / Max_Level_Including_Node_As_1)); // if left then is above
+            Current_Loc.y = +distance_bw_nodes_y + Parent_Loc.y - (distance_bw_nodes_y * (0.99) * ((float)Level_of_Current / Max_Level_Including_Node_As_1)); // if left then is above
         }
         else
         {
             Current_Loc.x = distance_bw_nodes_x + Parent_Loc.x; // Considering this would fit non origin genometric centered ?
             // Allah swt knows best
-            Current_Loc.y = distance_bw_nodes_y + Parent_Loc.y - (distance_bw_nodes_y * (0.99) * ((float)Level_of_Current / Max_Level_Including_Node_As_1)); // if right then below
+            Current_Loc.y = -distance_bw_nodes_y + Parent_Loc.y + (distance_bw_nodes_y * (0.99) * ((float)Level_of_Current / Max_Level_Including_Node_As_1)); // if right then below
         } // if this 0.8 goes above 1 it flips side of node
-    }
+    } // making right child top
 
     return 1;
 }
