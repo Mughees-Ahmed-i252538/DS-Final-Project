@@ -86,28 +86,34 @@ struct Sprite_Double_Array_Act_1_1 // remade for this act
                 NodeSTC_Array[i].Text_ptr->setFillColor(sf::Color::Black);
 
                 NodeSTC_Array[i].Sprite_ptr->setOrigin(sf::Vector2f(NodeSTC_Array[i].Sprite_ptr->getLocalBounds().size.x / 2, NodeSTC_Array[i].Sprite_ptr->getLocalBounds().size.y / 2));
-                NodeSTC_Array[i].Sprite_ptr->setOrigin(sf::Vector2f(NodeSTC_Array[i].Text_ptr->getLocalBounds().size.x / 2 + NodeSTC_Array[i].Text_ptr->getLocalBounds().position.x, NodeSTC_Array[i].Text_ptr->getLocalBounds().size.y / 2 + NodeSTC_Array[i].Text_ptr->getLocalBounds().position.y));
+                NodeSTC_Array[i].Text_ptr->setOrigin(sf::Vector2f(NodeSTC_Array[i].Text_ptr->getLocalBounds().size.x / 2 + NodeSTC_Array[i].Text_ptr->getLocalBounds().position.x, NodeSTC_Array[i].Text_ptr->getLocalBounds().size.y / 2 + NodeSTC_Array[i].Text_ptr->getLocalBounds().position.y));
 
                 sf::Vector2f CurrentLoc;
                 sf::Vector2f CurrentSize(0, 0);
-                sf::Vector2f ParentLoc(0, 0);
+                sf::Vector2f ParentLoc(0, 0); // Now we need to ensure that the further the child is from root the loser it is to its parent in y, to make space for toher nodes
                 if (i == 0)
                 {
-                    CurrentLoc.x = 20;
+                    CurrentLoc.x = 70;
                     CurrentLoc.y = window.getView().getSize().y / 2;
 
-                    Find_Sprite_Loc_And_Size(true, sf::Vector2f(0, 0), window, BinTree->NodeCapacity, CurrentLoc, CurrentSize, false);
+                    Find_Sprite_Loc_And_Size(true, sf::Vector2f(0, 0), window, BinTree->NodeCapacity, CurrentLoc, CurrentSize, false, i);
 
                 } // some paramters become dummy if root
                 else
                 {
 
                     ParentLoc = NodeSTC_Array[(i - 1) / 2].Sprite_ptr->getPosition();
-                    Find_Sprite_Loc_And_Size(false, ParentLoc, window, BinTree->NodeCapacity, CurrentLoc, CurrentSize, !ceil((i - 1) / 2.0)); // To detect if this node is left child or not, we simply do !ceil((i-1)/2.0), if it was a left child eg 1 => 0/2 =0 , !0 ->1 ; if right child eg 2, 1/2 =?0.5 ->ceil=> 1->!(!) =0
+                    Find_Sprite_Loc_And_Size(false, ParentLoc, window, BinTree->NodeCapacity, CurrentLoc, CurrentSize, i % 2 == 1, i); // TO be more acurate a left child is always at an odd index // To detect if this node is left child or not, we simply do !ceil((i-1)/2.0), if it was a left child eg 1 => 0/2 =0 , !0 ->1 ; if right child eg 2, 1/2 =?0.5 ->ceil=> 1->!(!) =0
                 }
 
                 NodeSTC_Array[i].Sprite_ptr->setPosition(CurrentLoc);
+
                 setSize_Sprite(*NodeSTC_Array[i].Sprite_ptr, CurrentSize);
+
+                if (i == 1)
+                {
+                    setSize_Sprite(*NodeSTC_Array[i].Sprite_ptr, sf::Vector2f(CurrentSize.x * 7, CurrentSize.y * 7));
+                }
 
                 NodeSTC_Array[i].Text_ptr->setPosition(CurrentLoc); // lets orign centre before this inshallah
                 setSize_Sprite(*NodeSTC_Array[i].Sprite_ptr, sf::Vector2f(CurrentSize.x / 2, CurrentSize.y / 2));
@@ -138,12 +144,14 @@ struct Sprite_Double_Array_Act_1_1 // remade for this act
         }
         for (int i = 0; i < BinTree->NodeCapacity; i++)
         {
-            if (NodeSTC_Array->Sprite_ptr == nullptr || NodeSTC_Array->Text_ptr == nullptr)
+            // cout << "+++++++++++++++++++++ " << i << endl;
+            if (NodeSTC_Array[i].Sprite_ptr == nullptr || NodeSTC_Array->Text_ptr == nullptr)
             {
                 continue;
             }
-            window.draw(*NodeSTC_Array->Sprite_ptr);
-            window.draw(*NodeSTC_Array->Text_ptr);
+            window.draw(*NodeSTC_Array[i].Sprite_ptr);
+            window.draw(*NodeSTC_Array[i].Text_ptr);
+            // cout << "------------------- " << i << endl;
         }
     }
 };
@@ -223,7 +231,19 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
         // Now for real time keyboard input
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) // This bypasses the poll queue to directly reaad state of keyboard
         {
-            NodeSprite_Array.NodeSTC_Array[0].Sprite_ptr->move(sf::Vector2f(0.5, 0.5));
+            NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->move(sf::Vector2f(1, 0));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->move(sf::Vector2f(-1, 0));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->move(sf::Vector2f(0, -1));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) // This bypasses the poll queue to directly reaad state of keyboard
+        {
+            NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->move(sf::Vector2f(0, 1));
         }
 
         // cout << "Crash test 1" << endl;
@@ -245,11 +265,11 @@ int Sub_Act_1_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Curre
         window.draw(*NodeSprite_Array.NodeSTC_Array[0].Sprite_ptr);*/
 
         NodeSprite_Array.Draw_On(window);
-        cout << "pos 0" << NodeSprite_Array.NodeSTC_Array[0].Sprite_ptr->getPosition().x << endl;
-        cout << "pos 1" << NodeSprite_Array.NodeSTC_Array[1].Sprite_ptr->getPosition().x << endl;
-        cout << "pos 2" << NodeSprite_Array.NodeSTC_Array[2].Sprite_ptr->getPosition().x << endl;
-        cout << "pos 3" << NodeSprite_Array.NodeSTC_Array[3].Sprite_ptr->getPosition().x << endl;
-        cout << "pos 4" << NodeSprite_Array.NodeSTC_Array[4].Sprite_ptr->getPosition().x << endl;
+        // window.draw(*NodeSprite_Array.NodeSTC_Array[1].Sprite_ptr);
+        // window.draw(*NodeSprite_Array.NodeSTC_Array[2].Sprite_ptr);
+
+        // for (int i = 0; i < 5; i++)
+        //     cout << "pos " << i << NodeSprite_Array.NodeSTC_Array[i].Sprite_ptr->getPosition().x << " " << NodeSprite_Array.NodeSTC_Array[i].Sprite_ptr->getPosition().y << endl;
 
         window.display();
     }
