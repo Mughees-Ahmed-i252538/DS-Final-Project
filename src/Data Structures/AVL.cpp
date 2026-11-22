@@ -3,6 +3,8 @@
 #include "BT.cpp"
 #include "BST.cpp" //fixed the path
 
+
+int rotationCount=0;
 struct AVLNode : public BSTNode
 {
     int height;
@@ -115,6 +117,7 @@ AVLNode *rightRotate(AVLNode *y)
     y->size = 1 + getSize(y->left) + getSize(y->right);
     a->size = 1 + getSize(a->left) + getSize(a->right);
 
+    rotationCount++;
     return a;
 }
 
@@ -138,6 +141,8 @@ AVLNode *leftRotate(AVLNode *x)
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
     x->size = 1 + getSize(x->left) + getSize(x->right);
     a->size = 1 + getSize(a->left) + getSize(a->right);
+
+    rotationCount++;
     return a;
 }
 
