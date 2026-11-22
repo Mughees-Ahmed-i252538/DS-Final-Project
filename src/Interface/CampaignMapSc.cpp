@@ -121,23 +121,6 @@ struct ScreenOrientations
         }
 };
 
-struct Sprite_Double_Array
-{
-        sf::Sprite **Sprite_Double_Ptr; // Tis is intitalized manually in code inshallah, we only need its destructor
-
-        Sprite_Double_Array()
-        {
-                Sprite_Double_Ptr = nullptr;
-        }
-        ~Sprite_Double_Array() // forgot to but the ~ tilda and it thought we were trying to ovcerload same parameter constructor;
-        {
-                if (Sprite_Double_Ptr != nullptr) // Also you cant overalaod same calss destructor
-                {
-                        delete Sprite_Double_Ptr;
-                }
-        }
-};
-
 int CampaignMapSc(sf::RenderWindow &window, LevelManager &Level_Manager) // This interacts with campaign map, level manager
 {
 

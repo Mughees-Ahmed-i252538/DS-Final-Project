@@ -4,6 +4,58 @@
 
 #include "UIManager.h"
 #include "../Game Mechanics/LevelManager.cpp"
+#include "../Data Structures/functions.cpp"
+
+struct BT_Module // cuz the bt isnt a struct so it cant auto delete, we need it to auto delete
+{
+    TreeNode *root = nullptr;
+    int NodeCapacity = 0;
+    BT_Module(string Tree, int NodeCap)
+    {
+        this->NodeCapacity = NodeCap;
+        root = makeBT(Tree, NodeCap);
+    }
+    ~BT_Module()
+    {
+        cout << "Deleting the Bt module" << endl;
+        DeleteTree(root);
+        this->NodeCapacity = 0;
+    }
+};
+
+struct Sprite_Double_Array_Act_1 // remade for this act
+{
+    sf::Sprite **Sprite_Double_Ptr; // Tis is intitalized manually in code inshallah, we only need its destructor
+    BT_Module *BinTree = nullptr;   // This keeps a ptr to the bt
+
+    Sprite_Double_Array_Act_1(BT_Module *BinT) // sees
+    {
+        BinTree = BinT; // issue fount BT was macro
+        Sprite_Double_Ptr = new sf::Sprite *[BinTree->NodeCapacity];
+        for (int i = 0; i < BinTree->NodeCapacity; i++)
+        {
+            Sprite_Double_Ptr[i] = nullptr;
+        }
+    }
+    ~Sprite_Double_Array_Act_1() // forgot to but the ~ tilda and it thought we were trying to ovcerload same parameter constructor;
+    {
+        if (Sprite_Double_Ptr != nullptr) // Also you cant overalaod same calss destructor
+        {
+
+            for (int i = 0; i < BinTree->NodeCapacity; i++)
+            {
+
+                if (Sprite_Double_Ptr[i] != nullptr)
+                {
+                    cout << "Deleting sprites" << endl;
+                    delete Sprite_Double_Ptr[i]; // Stores single sprite each ptr, interestingly you can use [][] on 2d arrays damed suing double ptr as well (google says)
+                }
+            }
+            cout << "Deleting the sprite* array" << endl;
+            delete[] Sprite_Double_Ptr;
+        } // unlike old verison usied in uimanger this one owns reach sprite
+    }
+};
 
 int Act_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Current_Level)
 {
@@ -22,16 +74,26 @@ int Act_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Current_Lev
 
     sf::Sprite Act_1_Bg_Sprite(Act_1_Bg_Texture); // No default cosntructor exsist hence must give texture at start
 
+    string Tree = Level_Manager.CurrentLevelData.Tree;
+
+    // TreeNode *Root = makeBT(Tree);
+
+    BT_Module Bin_T(Tree, Level_Manager.CurrentLevelData.NodeCapacity); // for some reason BT (macro didnt give issue as name for this ( i think replaces with empty spadce so no issue))
+
+    Sprite_Double_Array_Act_1 NodeSprite_Array(&Bin_T); // to auto call destructor
+
+    // NodeSprite_Array.Sprite_Double_Ptr = new sf::Sprite *[Level_Manager.CurrentLevelData.NodeCapacity]; // This may change in endlessmode inshallah, note issue found, the sprite* array logi is in constructor and repeated here, so memeory leak, ALhamdulilah rab al alameen
+
     // Act_1_Bg_Sprite we cant directly set size, in sfml , we can set scale
     // This set scale is wrt its actual global size
     // So we make a set size helper function
 
     // setSize(Act_1_Bg_Sprite, Wanted_View_Size); // to serve as the bg we need it to take whole screen
     setBgSize(window, Act_1_Bg_Sprite); // Sees window view to set size directly ( helpef function)
-    // I think we can make afucniton
-    // Set bg using view if need be
+                                        // I think we can make afucniton
+                                        // Set bg using view if need be
 
-        while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
+    while (window.isOpen()) // had done if instead of while, windows only opened for a brief moment
     {
         while (std::optional event = window.pollEvent()) // This is the sfml 3 syntax, the 2 syntax was make an sf::Event event and do while(window.pollevent(event)), which is no longer usable as eents can no longer be empty (they did it to upgrade from c to c++ usage , it puts safety checks...)
         {                                                // And yes we can and are initializing a variable inside the paranthesis of while, i think if no event is present it returns std::nullopt the std::optional converts to false, (it converts to true if it holds a value), when it becomes false we get out of poll loop...
@@ -76,6 +138,7 @@ int Act_1(sf::RenderWindow &window, LevelManager &Level_Manager, int Current_Lev
             Button_pos_x += 1;
         }
         */
+        cout << "Crash test 1" << endl;
         window.draw(Act_1_Bg_Sprite);
 
         window.display();

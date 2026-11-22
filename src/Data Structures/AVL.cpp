@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "BT.cpp"
-#include "src\Data Structures\BST.cpp"
+#include "BST.cpp" //fixed the path
 
 struct AVLNode : public BSTNode
 {
@@ -45,6 +45,9 @@ int getSize(AVLNode *root)
     }
     return root->size;
 }
+
+AVLNode *rightRotate(AVLNode *y);
+AVLNode *leftRotate(AVLNode *y);
 
 AVLNode *insert(AVLNode *root, int key)
 { // consider: user tree

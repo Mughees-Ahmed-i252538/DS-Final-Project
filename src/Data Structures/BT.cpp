@@ -10,9 +10,9 @@ struct TreeNode
 	static int id;
 	int value;
 
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode *parent;
+	TreeNode *left = nullptr;
+	TreeNode *right = nullptr;
+	TreeNode *parent = nullptr;
 	TreeNode()
 	{
 		left = right = parent = NULL;
@@ -88,7 +88,7 @@ public:
 };
 
 // Binary Tree
-void insert(TreeNode *p, int value)
+void insert(TreeNode *&p, int value, bool insert_left)
 {
 	if (p == nullptr)
 	{
@@ -97,7 +97,7 @@ void insert(TreeNode *p, int value)
 		return;
 	}
 
-	if (value < p->value)
+	if (insert_left)
 	{
 		if (p->left == nullptr)
 		{
@@ -106,7 +106,7 @@ void insert(TreeNode *p, int value)
 		}
 		else
 		{
-			insert(p->left, value);
+			cout << "Left Place was takem" << endl;
 		}
 	}
 	else
@@ -118,7 +118,7 @@ void insert(TreeNode *p, int value)
 		}
 		else
 		{
-			insert(p->right, value);
+			cout << "Righ Place was takem" << endl;
 		}
 	}
 }
@@ -391,5 +391,19 @@ void display(TreeNode *r)
 	cout << r->value << endl;
 	display(r->left);
 	display(r->right);
+}
+
+TreeNode *DeleteTree(TreeNode *&root)
+{
+	if (root == nullptr)
+	{
+		return nullptr;
+	}
+
+	DeleteTree(root->left);
+	DeleteTree(root->right);
+
+	delete root;	// cuz not stored anywhere we dont have to rerutne nullptr
+	return nullptr; // But just in case we use it that way inshallah
 }
 #endif

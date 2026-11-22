@@ -1,3 +1,6 @@
+#ifndef BST
+#define BST
+
 #include <iostream>
 #include <string>
 #include "BT.cpp"
@@ -276,3 +279,5 @@ BSTNode *lcaBST(BSTNode *root, BSTNode *a, BSTNode *b)
 	} while (temp != NULL);
 	return NULL;
 }
+
+#endif
