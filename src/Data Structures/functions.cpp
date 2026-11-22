@@ -3,6 +3,7 @@
 #include "BT.cpp"
 #include "BST.cpp"
 #include "AVL.cpp"
+#include "MaxHeap.cpp"
 using namespace std;
 
 void putChildrem_BT(int *&array, int size, TreeNode *&Current_Node, int Current_index)
@@ -52,14 +53,14 @@ void putChildrem_BT(int *&array, int size, TreeNode *&Current_Node, int Current_
 	}
 }
 
-TreeNode *makeBT(string s, int NodeCap) // I think a better idea on this one was to make a dmaed char array with lebgth = chars in string, for nums capacity = nodecapcity which could have been inputer
+TreeNode *makeBT(string s, int NodeCap, int* nums=nullptr) // I think a better idea on this one was to make a dmaed char array with lebgth = chars in string, for nums capacity = nodecapcity which could have been inputer
 {
 	string &chars = s;
 	// for (int i = 0; i < s.length() && i < CAPACITY; i++)
 	//{
 	//	chars[i] = s[i];
 	// } // i think one issue may arrive that we dont put \0 at end of char array, but it dpends on logic (if you never print using cout or use while(char array[i]!='\0) for loop):: Rethoughts after seeing code,: nodt using for the 2 purposes on ok Mashallah, Alhamulilah
-	int *nums = new int[NodeCap];
+	nums = new int[NodeCap];
 	int count = 0;
 	int i = 0;
 	while (i < s.length() && count < NodeCap)
@@ -172,4 +173,89 @@ BSTNode *makeBST(string s, int CAPACITY, int* nums=nullptr)
 	BSTNode *root = NULL;
 	putChildrenBST(nums, count, root, 0);
 	return root;
+}
+
+AVLNode *makeAVL(string s, int CAPACITY,  int* nums=nullptr)
+{
+    char* chars= new char[CAPACITY];
+    for (int i = 0; i < s.length(); i++)
+    {
+        chars[i] = s[i];
+    }
+
+    nums= new int[CAPACITY];
+    int count = 0;
+    int cur = 0;
+    bool reading = false;
+    for (int i = 0; i < s.length(); i++)
+    {
+        if (chars[i] >= '0' && chars[i] <= '9')
+        {
+            cur = cur * 10 + (chars[i] - '0');
+            reading = true;
+        }
+        else if (reading)
+        {
+            nums[count] = cur;
+            count++;
+            cur = 0;
+            reading = false;
+        }
+    }
+    if (reading)
+    {
+        nums[count] = cur;
+        count++;
+    }
+
+    AVLNode *root = NULL;
+    for (int i = 0; i < count; i++)
+    {
+        root = insert(root, nums[i]);
+        root->parent = NULL;
+    }
+    return root;
+}
+
+MaxHeap *makeMH(string s, int CAPACITY, int* nums=nullptr)
+{
+    int len = s.length();
+    if (len > CAPACITY)
+    {
+        len = CAPACITY;
+    }
+    char* chars= new char[CAPACITY];
+    for (int i = 0; i < len; i++)
+    {
+        chars[i] = s[i];
+    }
+
+    nums= new int[CAPACITY];
+    int count = 0;
+    int cur = 0;
+    bool reading = false;
+    for (int i = 0; i < len; i++)
+    {
+        if (chars[i] >= '0' && chars[i] <= '9')
+        {
+            cur = cur * 10 + (chars[i] - '0');
+            reading = true;
+        }
+        else if (reading)
+        {
+            nums[count] = cur;
+            count++;
+            cur = 0;
+            reading = false;
+        }
+    }
+    if (reading)
+    {
+        nums[count] = cur;
+        count++;
+    }
+
+    MaxHeap *h = new MaxHeap(CAPACITY);
+    h->buildMaxHeap(nums, count);
+    return h;
 }
