@@ -9,6 +9,10 @@ struct MaxHeap
 	int* array;
 	int filled;
 
+	MaxHeap(){
+		
+	}
+
 	MaxHeap(int c){
 		cap=c;
 		top=-1;

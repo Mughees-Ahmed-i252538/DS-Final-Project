@@ -9,7 +9,7 @@ struct Coordinates : public TreeNode, public MaxHeap
 {
     float x;
     float y;
-    Coordinates(int i)
+    Coordinates(int i, int NODECAP) : MaxHeap(NODECAP)
     {
         id = i;
         x = 0;
