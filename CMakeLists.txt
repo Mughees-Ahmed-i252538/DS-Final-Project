@@ -37,3 +37,4 @@ target_link_libraries(Program PRIVATE SFML::Graphics)
 #Issue came, cmake didnt have access to the git; added a 
 
 #For simplicity we can simply #include files in main without having to rebuild every time...AV
+

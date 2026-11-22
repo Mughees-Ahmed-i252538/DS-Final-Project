@@ -345,7 +345,12 @@ int Level_NFA_Map::Lock() // Done be a camign and saves as we load the catalog, 
 }
 int Level_NFA_Map::Unlock()
 {
+    if (this->Locked)
+    {
+        Stars = 0;
+    }
     this->Locked = false;
+
     return 1; // Success
 }
 int Level_NFA_Map::setStars(int Stars)
