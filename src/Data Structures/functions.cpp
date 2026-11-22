@@ -101,8 +101,6 @@ TreeNode *makeBT(string s, int NodeCap, int *&nums) // I think a better idea on 
 
 	// delete chars;
 
-	delete nums;
-
 	return root;
 }
 

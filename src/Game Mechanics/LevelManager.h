@@ -15,7 +15,8 @@ struct Level_NFA_Map // Level Name, File name map
 {
     string name; // although map there isnt any restructions on repeats
     string file;
-    int Act_no = 0;      // Structure update now structure uses
+    int Act_no = 0; // Structure update now structure uses
+
     bool Locked = false; // a fucntion locks this depending on catalog previous level
     int Stars = 0;       // Used for seeing score
 
@@ -73,6 +74,8 @@ struct Act_4_Data
 struct LevelData
 {
     int Act = 0; // can be 1 , 2, 3 ,4
+    int Sub_Act = 0;
+
     // They have different datas
     string Description;
     int nodeCount = 0;

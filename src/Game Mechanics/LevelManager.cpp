@@ -1109,6 +1109,8 @@ int LevelData::writeData(string file_content, int Act_No_From_Catalog) // To cha
     cout << "Act Number Gotten From Catalog" << endl; // If this is off
     Buffer_Act_No = Act_No_From_Catalog;              // removed featiure of reading act no from file if not sent from catalog
 
+    int Buffer_Sub_Act_no = 0;
+    Take_One_Int_Cut(file_content, Buffer_Sub_Act_no, ':', ',', true, true, true, true);
     // cout << "Test 0.2" << endl;
 
     // Description also same in each act
@@ -1265,6 +1267,7 @@ int LevelData::writeData(string file_content, int Act_No_From_Catalog) // To cha
         return -6;
     }
 
+    this->Sub_Act = Buffer_Sub_Act_no;
     this->NodeCapacity = Buffer_NodeCap;
     this->Act = Buffer_Act_No; // Irrespective of mode or act this holds, Alhamdulilah
     this->Description = Buffer_Description;
