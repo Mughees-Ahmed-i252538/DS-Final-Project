@@ -1,4 +1,5 @@
 {
+  "Sub Act": 3,
   "Description": "Bismillah hirahman nirahim. Level 1. Act 1. in stored mode the count should be exactly equal to no of nodes written. Rule the descritpion mustnt have a comma or a colon a semicolon or fullstop may be used. I think issue in the iorder preorder mode how will it tell apart children of children from sibling.... Hm i think value comparsion would od it inshallah. Alhamdulilah rab al alameen",
   "Node Count": 5,
   "Node Cap": 10,
