@@ -9,50 +9,66 @@
 struct BT_Module // cuz the bt isnt a struct so it cant auto delete, we need it to auto delete
 {
     TreeNode *root = nullptr;
+    int *Tree_In_Array_Form = nullptr;
     int NodeCapacity = 0;
     BT_Module(string Tree, int NodeCap)
     {
         this->NodeCapacity = NodeCap;
-        root = makeBT(Tree, NodeCap);
+        root = makeBT(Tree, NodeCap, Tree_In_Array_Form);
     }
     ~BT_Module()
     {
         cout << "Deleting the Bt module" << endl;
         DeleteTree(root);
         this->NodeCapacity = 0;
+        if (Tree_In_Array_Form != nullptr)
+        {
+            delete Tree_In_Array_Form;
+        }
     }
 };
 
+struct Node_Sprite_Text_Combo
+{
+    sf::Sprite *Sprite_ptr;
+    sf::Text *Text_ptr;
+    TreeNode *Node_uo_ptr; // unowner
+
+    ~Node_Sprite_Text_Combo()
+    {
+        if (Sprite_ptr != nullptr)
+        {
+            delete Sprite_ptr;
+        }
+        if (Text_ptr != nullptr)
+        {
+            delete Text_ptr;
+        } // the treenode is unowned
+    }
+};
 struct Sprite_Double_Array_Act_1 // remade for this act
 {
-    sf::Sprite **Sprite_Double_Ptr; // Tis is intitalized manually in code inshallah, we only need its destructor
-    BT_Module *BinTree = nullptr;   // This keeps a ptr to the bt
+    // sf::Sprite **Sprite_Double_Ptr; // Tis is intitalized manually in code inshallah, we only need its destructor
+    Node_Sprite_Text_Combo *NodeSTC_Array; // we also need to track text and accompanying node for a sprite so changed from sprte ** to sptr of this struct that holds ptr for sprite, text and treenode
+    BT_Module *BinTree = nullptr;          // This keeps a ptr to the bt
 
     Sprite_Double_Array_Act_1(BT_Module *BinT) // sees
     {
         BinTree = BinT; // issue fount BT was macro
-        Sprite_Double_Ptr = new sf::Sprite *[BinTree->NodeCapacity];
+        NodeSTC_Array = new Node_Sprite_Text_Combo[BinTree->NodeCapacity];
         for (int i = 0; i < BinTree->NodeCapacity; i++)
         {
-            Sprite_Double_Ptr[i] = nullptr;
+            NodeSTC_Array[i].Sprite_ptr = nullptr;
+            NodeSTC_Array[i].Text_ptr = nullptr;
         }
     }
     ~Sprite_Double_Array_Act_1() // forgot to but the ~ tilda and it thought we were trying to ovcerload same parameter constructor;
     {
-        if (Sprite_Double_Ptr != nullptr) // Also you cant overalaod same calss destructor
+        if (NodeSTC_Array != nullptr) // Also you cant overalaod same calss destructor
         {
 
-            for (int i = 0; i < BinTree->NodeCapacity; i++)
-            {
-
-                if (Sprite_Double_Ptr[i] != nullptr)
-                {
-                    cout << "Deleting sprites" << endl;
-                    delete Sprite_Double_Ptr[i]; // Stores single sprite each ptr, interestingly you can use [][] on 2d arrays damed suing double ptr as well (google says)
-                }
-            }
-            cout << "Deleting the sprite* array" << endl;
-            delete[] Sprite_Double_Ptr;
+            cout << "Deleting the NodeSTC_Array  array" << endl;
+            delete[] NodeSTC_Array;
         } // unlike old verison usied in uimanger this one owns reach sprite
     }
 };

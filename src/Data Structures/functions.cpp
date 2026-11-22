@@ -53,14 +53,14 @@ void putChildrem_BT(int *&array, int size, TreeNode *&Current_Node, int Current_
 	}
 }
 
-TreeNode *makeBT(string s, int NodeCap) // I think a better idea on this one was to make a dmaed char array with lebgth = chars in string, for nums capacity = nodecapcity which could have been inputer
+TreeNode *makeBT(string s, int NodeCap, int *&nums) // I think a better idea on this one was to make a dmaed char array with lebgth = chars in string, for nums capacity = nodecapcity which could have been inputer
 {
 	string &chars = s;
 	// for (int i = 0; i < s.length() && i < CAPACITY; i++)
 	//{
 	//	chars[i] = s[i];
 	// } // i think one issue may arrive that we dont put \0 at end of char array, but it dpends on logic (if you never print using cout or use while(char array[i]!='\0) for loop):: Rethoughts after seeing code,: nodt using for the 2 purposes on ok Mashallah, Alhamulilah
-	int *nums = new int[NodeCap];
+	nums = new int[NodeCap];
 	int count = 0;
 	int i = 0;
 	while (i < s.length() && count < NodeCap)
