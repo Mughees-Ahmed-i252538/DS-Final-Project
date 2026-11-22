@@ -1,5 +1,3 @@
-#ifndef BT
-#define BT
 
 #include <iostream>
 #include <string>
