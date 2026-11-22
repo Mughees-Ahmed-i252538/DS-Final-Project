@@ -1,6 +1,3 @@
-#ifndef BST
-#define BST
-
 #include <iostream>
 #include <string>
 #include "BT.cpp"
@@ -33,23 +30,24 @@ struct BSTNode : public TreeNode
 
 BSTNode *insertNode(BSTNode *root, int val)
 {
-	BSTNode *temp = new BSTNode(val);
 	if (root == NULL)
-	{
-		root = temp;
-		return root;
-	}
+    {
+		BSTNode* roottemp=new BSTNode(val);
+        return roottemp;
+    }
 	else
 	{
 
 		if (val < root->tpayload)
 		{
 			root->left = insertNode(root->left, val);
+			root->left->parent = root;
 		}
 
 		if (val > root->tpayload)
 		{
 			root->right = insertNode(root->right, val);
+			root->right->parent = root;
 		}
 		if (val == root->tpayload)
 		{
@@ -279,5 +277,3 @@ BSTNode *lcaBST(BSTNode *root, BSTNode *a, BSTNode *b)
 	} while (temp != NULL);
 	return NULL;
 }
-
-#endif

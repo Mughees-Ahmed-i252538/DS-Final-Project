@@ -24,6 +24,9 @@ struct AVLNode : public BSTNode
 
 int getBalanceFactor(AVLNode *root)
 {
+    if (root==NULL){
+        return 0;
+    }
     return (root->left->height - root->right->height);
 }
 
@@ -36,7 +39,6 @@ int getHeight(AVLNode *node)
     return node->height;
 }
 
-//<<<<<<< HEAD
 int getSize(AVLNode *root)
 {
     if (root == NULL)
@@ -50,7 +52,7 @@ AVLNode *rightRotate(AVLNode *y);
 AVLNode *leftRotate(AVLNode *y);
 
 AVLNode *insert(AVLNode *root, int key)
-{ // consider: user tree
+{ 
     if (root == NULL)
     {
         AVLNode *temp = new AVLNode(key);
@@ -60,17 +62,19 @@ AVLNode *insert(AVLNode *root, int key)
     if (key < root->value)
     {
         root->left = insert(root->left, key);
+        root->left->parent=root;
     }
     else if (key > root->value)
     {
         root->right = insert(root->right, key);
+        root->right->parent=root;
     }
     else
     {
         cout << "Duplicate!!" << endl;
+        return root;
     }
 
-    //<<<<<<< HEAD
     root->height = (getHeight(root->left) > getHeight(root->right) ? getHeight(root->left) : getHeight(root->right)) + 1;
     root->size = 1 + getSize(root->left) + getSize(root->right);
     if (getBalanceFactor(root) > 1 && key < root->left->value)
@@ -99,8 +103,13 @@ AVLNode *rightRotate(AVLNode *y)
     AVLNode *a = y->left;
     AVLNode *b = a->right;
     a->right = y;
+    a->right->parent=a;
     y->left = b;
-    //<<<<<<< HEAD
+    a->parent = y->parent;
+    y->parent=a;
+    if (b!=NULL){
+    y->left->parent=y;
+    }
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
     y->height = (getHeight(y->left) > getHeight(y->right) ? getHeight(y->left) : getHeight(y->right)) + 1;
     y->size = 1 + getSize(y->left) + getSize(y->right);
@@ -116,10 +125,15 @@ AVLNode *leftRotate(AVLNode *x)
         return NULL;
     }
     AVLNode *a = x->right;
-    //<<<<<<< HEAD
     AVLNode *b = a->left;
     a->left = x;
+    a->left->parent=a;
     x->right = b;
+    a->parent = x->parent;
+    x->parent = a;
+    if (b != NULL) 
+    {b->parent = x;
+    }
     x->height = (getHeight(x->left) > getHeight(x->right) ? getHeight(x->left) : getHeight(x->right)) + 1;
     a->height = (getHeight(a->left) > getHeight(a->right) ? getHeight(a->left) : getHeight(a->right)) + 1;
     x->size = 1 + getSize(x->left) + getSize(x->right);
@@ -161,9 +175,9 @@ AVLNode *rebalance(AVLNode *root)
     return root;
 }
 
-//<<<<<<< HEAD
+
 int kthAVL(AVLNode *root, int k)
-{ // changed: added k as a parameter
+{ 
     AVLNode *temp = root;
     while (temp != NULL)
     {
