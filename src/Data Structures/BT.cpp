@@ -7,8 +7,9 @@ using namespace std;
 
 struct TreeNode
 {
-	static int id;
+	int id=0;
 	int value;
+	static int count;
 
 	TreeNode *left = nullptr;
 	TreeNode *right = nullptr;
@@ -17,16 +18,16 @@ struct TreeNode
 	{
 		left = right = parent = NULL;
 		value = 0;
-		id++;
+		id=count++;
 	}
 	TreeNode(int v)
 	{
 		left = right = parent = NULL;
 		value = v;
-		id++;
+		id=count++;
 	}
 };
-int TreeNode::id = 0;
+int TreeNode::count=0;
 
 class BTQueue
 {
